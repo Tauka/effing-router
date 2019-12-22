@@ -1,17 +1,17 @@
-import { merge } from 'effector';
+import { merge, combine } from 'effector';
 import _ from 'lodash';
 
-import { $router, routeStores } from './router';
-import { go, replace, set, back } from './events';
+import { $router } from './router';
 import createRoutesConfig from './createRoutesConfig';
-import preProcessRoute from './preProcessRoute';
-import { parseArgs } from './parseArgs';
-import { resolvePath } from './resolvePath';
-import { connectRouteHooks } from './routeHooks';
+import { connectRouteApi } from './connectRouteApi';
+import { connectRouteHooks } from './connectRouteHooks';
 
 const createRouter = (routesList, $deps) =>
 {
 	const routesCfg = createRoutesConfig(routesList);
+
+	const $path = $router.map(r => r.path);
+	const $params = $router.map(r => r.params);
 
 	if($deps)
 		$router
@@ -21,31 +21,14 @@ const createRouter = (routesList, $deps) =>
 				return { path, params, deps };
 			})
 
-	$router
-		.on([go, replace, set], (route, newPath) =>
+	connectRouteApi($router);
+	connectRouteHooks($router, routesCfg);
+
+	return { cfg: routesCfg, router:
 		{
-			let path = [];
-			let params = {};
-			if(_.isFunction(newPath))
-			{
-				const newRoute = newPath(route.path, route.params, route.deps);
-				path = newRoute.path;
-				params = newRoute.params;
-			}
-			else
-			{
-				const newRoute = parseArgs(newPath);
-				path = resolvePath(route.path, newRoute.path, newRoute.isAbsolute)
-				params = newRoute.params;
-			}
-
-			return { path, params, deps: route.deps };
-		})
-		.on(back, _.noop);
-
-		connectRouteHooks($router, routesCfg);
-
-	return { cfg: routesCfg, routeStores };
+			$path,
+			$params
+		}};
 };
 
 export default createRouter;

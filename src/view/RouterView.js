@@ -1,9 +1,13 @@
 import React from 'react';
-import { useStore } from 'effector-react';
+import { useStore, useStoreMap } from 'effector-react';
 
-const BuildComponent = ({ routesCfg, currentTokenIdx, routeStores, tokens }) =>
+const BuildComponent = ({ routesCfg, currentTokenIdx, pathStore, tokens }) =>
 {
-	const token = useStore(routeStores[currentTokenIdx]);
+	const token = useStoreMap({
+		store: pathStore,
+		keys: [currentTokenIdx],
+		fn: (path, [tokenIdx]) => path[tokenIdx]
+	});
 
 	if(!token)
 		return null;
@@ -14,7 +18,7 @@ const BuildComponent = ({ routesCfg, currentTokenIdx, routeStores, tokens }) =>
 		<BuildComponent
 			routesCfg={routesCfg}
 			currentTokenIdx={currentTokenIdx + 1}
-			routeStores={routeStores}
+			pathStore={pathStore}
 		/>
 	</Component>;
 };
@@ -24,7 +28,7 @@ const RouterView = ({ routerConfig }) =>
 	return <BuildComponent
 		routesCfg={routerConfig.cfg}
 		currentTokenIdx={0}
-		routeStores={routerConfig.routeStores}
+		pathStore={routerConfig.router.$path}
 	/>;
 };
 
