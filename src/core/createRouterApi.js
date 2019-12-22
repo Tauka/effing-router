@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import { forward } from 'effector';
 import { useStore } from 'effector-react';
-import { go, push, replace, pushReplace,
-	pushLast, pushLastReplace, back, modifyRoute } from './events';
+import { go, replace, back } from './events';
 
 import { $router } from './router';
 
@@ -30,13 +29,8 @@ export default () =>
 		subscribeToParams,
 		location: { useLocationBottom },
 		go,
-		push,
 		replace,
 		back,
-		pushReplace,
-		pushLast,
-		pushLastReplace,
-		modifyRoute,
 		createParamStore,
 		$router
 	};

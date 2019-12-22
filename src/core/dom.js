@@ -3,8 +3,7 @@ import { merge } from 'effector';
 import buildPath from './buildPath';
 
 import { $router } from './router';
-import { go, push, replace, back,
-	pushReplace, pushLast, pushLastReplace, modifyRoute } from './events';
+import { go, replace, set, back } from './events';
 
 const browserHistoryBack = () =>
 	window.history.back();
@@ -25,17 +24,19 @@ const browserHistoryReplace = (route, stringPath, basename = '') =>
 		`${basename}${stringPath}`);
 };
 
-const pathnameGo = basename =>
+const pathnameFactory = ev => basename =>
 {
 	if(basename && window.location.pathname.includes(basename))
-		go(window.location.pathname.replace(basename, ''));
+		ev(window.location.pathname.replace(basename, '') + window.location.search);
 	else
-		go(window.location.pathname);
-};
+		ev(window.location.pathname + window.location.search);
+}
+
+const pathnameSet = pathnameFactory(set);
 
 export const bindDom = (router, $deps, basename) =>
 {
-	$router.watch(merge([go, push, pushLast]), route =>
+	$router.watch(go, route =>
 	{
 		const stringPath = buildPath(
 			router.cfg,
@@ -45,7 +46,7 @@ export const bindDom = (router, $deps, basename) =>
 		browserHistoryPush(route, stringPath, basename);
 	});
 
-	$router.watch(merge([replace, pushReplace, pushLastReplace, modifyRoute]), route =>
+	$router.watch(replace, route =>
 	{
 		const stringPath = buildPath(
 			router.cfg,
@@ -74,10 +75,10 @@ export const bindDom = (router, $deps, basename) =>
 		browserHistoryBack();
 	});
 
-	pathnameGo(basename);
+	pathnameSet(basename);
 
 	window.onpopstate = () =>
 	{
-		pathnameGo(basename);
+		pathnameSet(basename);
 	};
 };

@@ -1,25 +1,5 @@
 import { createStore } from 'effector';
 
-export const commonPath = (p1, p2) =>
-{
-	const newPath = [];
-
-	for(let i = 0; i < p1.length; i ++)
-	{
-		if(p1[i] === p2[0])
-			break;
-
-		newPath.push(p1[i]);
-	}
-
-	for(let i = 0; i < p2.length; i ++)
-	{
-		newPath.push(p2[i]);
-	}
-
-	return newPath;
-};
-
 export const watchLastTwo = (store, cb) =>
 {
 	return createStore(
