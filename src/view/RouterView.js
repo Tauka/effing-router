@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useStore, useStoreMap } from 'effector-react';
 
-const BuildComponent = ({ routesCfg, currentTokenIdx, pathStore, tokens }) =>
+const BuildComponent = ({ routesCfg, currentTokenIdx, pathStore, tokens, extraProps }) =>
 {
 	const token = useStoreMap({
 		store: pathStore,
 		keys: [currentTokenIdx],
-		fn: (path, [tokenIdx]) => path[tokenIdx]
+		fn: (path, [tokenIdx]) => path[tokenIdx] ?? null
 	});
+
+	const ChildRoute = useMemo(() =>
+	{
+		return props => <BuildComponent
+			extraProps={props}
+			routesCfg={routesCfg}
+			currentTokenIdx={currentTokenIdx + 1}
+			pathStore={pathStore}
+		/>
+	}, []);
 
 	if(!token)
 		return null;
 
 	const Component = routesCfg[token].component;
 
-	return <Component>
-		<BuildComponent
-			routesCfg={routesCfg}
-			currentTokenIdx={currentTokenIdx + 1}
-			pathStore={pathStore}
-		/>
-	</Component>;
+	return <Component {...extraProps} ChildRoute={ChildRoute}/>
 };
 
 const RouterView = ({ routerConfig }) =>
