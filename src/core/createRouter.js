@@ -5,6 +5,8 @@ import { $router, routeStores } from './router';
 import { go, replace, set, back } from './events';
 import createRoutesConfig from './createRoutesConfig';
 import preProcessRoute from './preProcessRoute';
+import { parseArgs } from './parseArgs';
+import { resolvePath } from './resolvePath';
 import { connectRouteHooks } from './routeHooks';
 
 const createRouter = (routesList, $deps) =>
@@ -32,9 +34,8 @@ const createRouter = (routesList, $deps) =>
 			}
 			else
 			{
-				const tokens = tokenizePath(newPath);
-				const newRoute = preProcessRoute(routesCfg, tokens, route.deps);
-				path = newRoute.path;
+				const newRoute = parseArgs(newPath);
+				path = resolvePath(route.path, newRoute.path, newRoute.isAbsolute)
 				params = newRoute.params;
 			}
 
