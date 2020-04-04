@@ -20,7 +20,7 @@ const renderParams = paramsObj =>
 	return `?${stringParams}`;
 }
 
-const buildPath = (routesCfg, pathTokens, paramsObj) =>
+const buildPath = (pathTokens, paramsObj) =>
 {
 	return renderPath(pathTokens) +
 		renderParams(paramsObj);

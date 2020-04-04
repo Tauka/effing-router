@@ -11,12 +11,15 @@ const BuildComponent = ({ routesCfg, currentTokenIdx, pathStore, tokens, extraPr
 
 	const ChildRoute = useMemo(() =>
 	{
-		return props => <BuildComponent
-			extraProps={props}
-			routesCfg={routesCfg}
-			currentTokenIdx={currentTokenIdx + 1}
-			pathStore={pathStore}
-		/>
+		return props =>
+			<>
+				<BuildComponent
+					extraProps={props}
+					routesCfg={routesCfg}
+					currentTokenIdx={currentTokenIdx + 1}
+					pathStore={pathStore}
+				/>
+			</>
 	}, []);
 
 	if(!token)
@@ -27,12 +30,12 @@ const BuildComponent = ({ routesCfg, currentTokenIdx, pathStore, tokens, extraPr
 	return <Component {...extraProps} ChildRoute={ChildRoute}/>
 };
 
-const RouterView = ({ routerConfig }) =>
+const RouterView = ({ router }) =>
 {
 	return <BuildComponent
-		routesCfg={routerConfig.cfg}
+		routesCfg={router.cfg.routes}
 		currentTokenIdx={0}
-		pathStore={routerConfig.router.$path}
+		pathStore={router.cfg.$path}
 	/>;
 };
 

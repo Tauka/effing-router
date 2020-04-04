@@ -36,44 +36,34 @@ const pathnameSet = pathnameFactory(set);
 
 export const bindDom = (router, $deps, basename) =>
 {
-	$router.watch(go, route =>
+	$router.watch(go, (route, go) =>
 	{
 		const stringPath = buildPath(
-			router.cfg,
 			route.path,
 			route.params);
+
+		if(go.replace)
+			return browserHistoryReplace(route, stringPath, basename);
 
 		browserHistoryPush(route, stringPath, basename);
 	});
-
-	$router.watch(replace, route =>
-	{
-		const stringPath = buildPath(
-			router.cfg,
-			route.path,
-			route.params);
-
-		browserHistoryReplace(route, stringPath, basename);
-	});
-
-	if($deps)
-		$router.watch($deps, route =>
-		{
-			const stringPath = buildPath(
-				router.cfg,
-				route.path,
-				route.params);
-
-			if(!stringPath)
-				return;
-
-			browserHistoryReplace(route, stringPath, basename);
-		});
 
 	$router.watch(back, route =>
 	{
 		browserHistoryBack();
 	});
+
+	$router.watch(route =>
+	{
+		if(!route.path.length)
+			return;
+
+		const stringPath = buildPath(
+			route.path,
+			route.params);
+
+		browserHistoryPush(route, stringPath, basename);
+	})
 
 	pathnameSet(basename);
 

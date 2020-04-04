@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { createGate } from 'effector-react';
 
 /**
  * Creates pathToken-routeCfg map
@@ -9,40 +10,11 @@ import _ from 'lodash';
 */
 const parseRoutePath = (cfg, route) =>
 {
-	const tokens = _.compact(route.path.split('/'));
-	const pathToken = tokens[0];
-	const paramsTokens = tokens.slice(1);
-	// assume path always starts from routeToken and has only 1 of it
+	const pathToken = route.path;
 	if(cfg[pathToken])
 		throw Error(`Path "${pathToken}" is already declared`);
 
-	cfg[pathToken] = {};
-	// remove : from params
-	if(paramsTokens)
-	{
-		const paramObj = _.transform(paramsTokens, (paramObj, token) =>
-		{
-			if(!token.includes(':'))
-				throw Error(`${token}: There must be only one path token, or add : to make it param token`);
-
-			if(token.includes('?'))
-			{
-				paramObj.optParams.push(token.slice(2));
-				return;
-			}
-
-			paramObj.params.push(token.slice(1));
-		}, { params: [], optParams: [] });
-
-		cfg[pathToken] = paramObj;
-	}
-
-	cfg[pathToken] =
-	{
-		path: pathToken,
-		...cfg[pathToken],
-		..._.omit(route, ['path'])
-	};
+	cfg[pathToken] = route;
 };
 
 /**

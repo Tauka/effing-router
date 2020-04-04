@@ -1,0 +1,1 @@
+npx babel src -w -d ./dist

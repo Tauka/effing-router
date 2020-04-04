@@ -7,7 +7,7 @@ import { resolvePath } from './resolvePath';
 export const connectRouteApi = $router =>
 {
 	$router
-		.on([go, replace, set], (route, newPath) =>
+		.on([go, set], (route, newPath) =>
 		{
 			let path = [];
 			let params = {};
