@@ -1,0 +1,1 @@
+export { bindDom } from './bindDom';

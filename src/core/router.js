@@ -1,19 +1,18 @@
-import _ from 'lodash';
-import { combine } from 'effector';
-import { setDeps } from './events';
+import { createStore } from 'effector';
+import { go, set, replace, back } from './events';
 
-export const $router =  combine(
-	{
-		path: [],
-		params: {},
-		deps: {}
-	});
+export const $router =  createStore(
+{
+	path: [],
+	params: {}
+});
 
-$router.on(setDeps, (router, newDeps) =>
-	({
-		...router,
-		deps: { ...router.deps, ...newDeps }
-	}));
+export const $path = $router.map(r => r.path);
+export const $params = $router.map(r => r.params);
 
-$router.updates.watch(route =>
-	console.log('[router]', route));
+export const router = {
+	$: $router,
+	$path,
+	$params,
+	go, set, replace, back
+}

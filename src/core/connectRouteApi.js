@@ -3,8 +3,9 @@ import { go, replace, set, back } from './events';
 
 import { parseArgs } from './parseArgs';
 import { resolvePath } from './resolvePath';
+import { checkConditions } from './checkConditions';
 
-export const connectRouteApi = $router =>
+export const connectRouteApi = ($router, routesCfg) =>
 {
 	$router
 		.on([go, set], (route, newPath) =>
@@ -24,7 +25,8 @@ export const connectRouteApi = $router =>
 				params = newRoute.params;
 			}
 
-			return { path, params, deps: route.deps };
+			const afterCheck = checkConditions(path, params, routesCfg);
+			return { path: afterCheck.path, params: afterCheck.params };
 		})
 		.on(back, _.noop);
 }

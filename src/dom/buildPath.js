@@ -20,7 +20,7 @@ const renderParams = paramsObj =>
 	return `?${stringParams}`;
 }
 
-const buildPath = (pathTokens, paramsObj) =>
+export const buildPath = (pathTokens, paramsObj) =>
 {
 	return renderPath(pathTokens) +
 		renderParams(paramsObj);

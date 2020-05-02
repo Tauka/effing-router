@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { createGate } from 'effector-react';
 
 /**
  * Creates pathToken-routeCfg map
@@ -41,7 +40,7 @@ export const createParamsCfgMap = routesConfig =>
 	}, {});
 };
 
-const createRoutesConfig = routesList =>
+export const createRoutesConfig = routesList =>
 {
 	return routesList.reduce((cfg, route, idx) =>
 	{

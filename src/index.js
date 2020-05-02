@@ -1,8 +1,10 @@
-export { default as createRouter } from './core/createRouter';
-export { bindDom } from './core/dom';
-import api from './api';
-export { default as RouterView } from './view/RouterView';
+export { initializeRouter } from './core/initializeRouter';
+import { router as baseRouter } from './core/router';
+import { createMountEvent, createUnmountEvent, createParamStore } from './core/eventCreators';
 
-const { go, replace, back } = api;
-
-export { go, replace, back }
+export const router = {
+    ...baseRouter,
+    createMountEvent,
+    createUnmountEvent,
+    createParamStore
+}
