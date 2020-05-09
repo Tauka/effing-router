@@ -1,16 +1,16 @@
-import _ from 'lodash';
+import { compact } from '@lib';
 
 /**
  * Expecting something like '/dashboard/main?id=5&courseId=3'
  * @param {} path
  */
-export const parseArgs = path =>
+export const parseArgs = (path: string) =>
 {
 	const isAbsolute = path[0] === '/';
 	const [ pathTokensString, paramsTokensString ] = path.split('?')
-	const pathTokens = _.compact(pathTokensString.split('/'));
+	const pathTokens = compact(pathTokensString.split('/'));
 	const searchParams = new URLSearchParams(paramsTokensString);
-	const paramsObj = {};
+	const paramsObj: {[k: string]: string} = {};
 
 	for(const [ key, value ] of searchParams)
 	{

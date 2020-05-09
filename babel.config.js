@@ -4,7 +4,8 @@ module.exports = {
 		[
 			'@babel/env'
 		],
-		'@babel/preset-react'
+		'@babel/preset-react',
+		"@babel/typescript",
 	],
 	plugins: 
 	[

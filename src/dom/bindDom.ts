@@ -1,11 +1,13 @@
+import { Event } from 'effector';
 import buildPath from './buildPath';
+import { ObjectQuery, Query, RouterConfiguration, StringQuery } from 'src/core/types';
 
-export const bindDom = (router, basename) =>
+export const bindDom = (router: RouterConfiguration, basename: string) =>
 {
 	const { $, go, replace, set, back } = router;
-	const pathnameSet = pathnameFactory(set);
+	const pathnameSet = pathnameFactory(set as Event<StringQuery>);
 
-	$.watch(go, (route, go) =>
+	$.watch(go, (route: ObjectQuery, go: Query) =>
 	{
 		const stringPath = buildPath(
 			route.path,
@@ -17,7 +19,7 @@ export const bindDom = (router, basename) =>
 		browserHistoryPush(route, stringPath, basename);
 	});
 
-	$.watch(replace, (route, go) =>
+	$.watch(replace, route =>
 	{
 		const stringPath = buildPath(
 			route.path,
@@ -26,7 +28,7 @@ export const bindDom = (router, basename) =>
 		browserHistoryReplace(route, stringPath, basename);
 	});
 
-	$.watch(back, route =>
+	$.watch(back, () =>
 	{
 		browserHistoryBack();
 	});
@@ -35,7 +37,6 @@ export const bindDom = (router, basename) =>
 
 	window.onpopstate = () =>
 	{
-		console.log('onpopstate');
 		pathnameSet(basename);
 	};
 };
@@ -43,23 +44,23 @@ export const bindDom = (router, basename) =>
 const browserHistoryBack = () =>
 	window.history.back();
 
-const browserHistoryPush = (route, stringPath, basename = '') =>
+const browserHistoryPush = (route: ObjectQuery, stringPath: string, basename = '') =>
 {
 	window.history.pushState(
 		route,
-		null,
+		'',
 		`${basename}${stringPath}`);
 };
 
-const browserHistoryReplace = (route, stringPath, basename = '') =>
+const browserHistoryReplace = (route: ObjectQuery, stringPath: string, basename = '') =>
 {
 	window.history.replaceState(
 		route,
-		null,
+		'',
 		`${basename}${stringPath}`);
 };
 
-const pathnameFactory = ev => basename =>
+const pathnameFactory = (ev: Event<StringQuery>) => (basename: string) =>
 {
 	if(basename && window.location.pathname.includes(basename))
 		ev(window.location.pathname.replace(basename, '') + window.location.search);

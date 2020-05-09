@@ -79,10 +79,15 @@ module.exports = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    "@lib": "<rootDir>/src/lib.ts",
+    "^@core(.*)$": "<rootDir>/src/core$1",
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  // modulePathIgnorePatterns: [],
+  modulePathIgnorePatterns: [
+    'dist'
+  ],
 
   // Activates notifications for test results
   // notify: false,

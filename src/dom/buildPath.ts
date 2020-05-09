@@ -1,15 +1,17 @@
-const renderPath = pathTokens =>
+import { Path, Params } from '@core/types';
+
+const renderPath = (pathTokens: Path) =>
 {
 	return '/' + pathTokens.join('/');
 }
 
-const renderParams = paramsObj =>
+const renderParams = (paramsObj: Params) =>
 {
 	const searchParams = new URLSearchParams();
 
 	Object.entries(paramsObj).forEach(([ key, val ]) =>
 	{
-		searchParams.set(key, val);
+		searchParams.set(key, String(val));
 	});
 
 	const stringParams = searchParams.toString();
@@ -20,7 +22,7 @@ const renderParams = paramsObj =>
 	return `?${stringParams}`;
 }
 
-export const buildPath = (pathTokens, paramsObj) =>
+export const buildPath = (pathTokens: Path, paramsObj: Params) =>
 {
 	return renderPath(pathTokens) +
 		renderParams(paramsObj);

@@ -13,23 +13,23 @@ const makeReactComponent = id =>
 
 const routesList = [
   {
-    path: "dashboard",
+    name: "dashboard",
     component: makeReactComponent("dashboard")
   },
   {
-    path: "auth",
+    name: "auth",
     component: makeReactComponent("auth")
   },
   {
-    path: "main",
+    name: "main",
     component: makeReactComponent("main")
   },
   {
-    path: "courses",
+    name: "courses",
     component: makeReactComponent("courses")
   },
   {
-    path: "profile",
+    name: "profile",
     component: makeReactComponent("profile")
   }
 ];
@@ -44,7 +44,7 @@ test("basic view", () =>
     $path
   }
 
-  const { container } = render(<RouterView router={router}/>)
+  const { container } = render(<RouterView routerConfig={router}/>)
   expect(container).toHaveDOMNesting(['main', 'dashboard']);
 })
 
@@ -56,7 +56,7 @@ test("passing props to children", () =>
     $path
   }
 
-  const { container } = render(<RouterView router={router}/>)
+  const { container } = render(<RouterView routerConfig={router}/>)
   const dashboard = container.querySelector("#dashboard");
   expect(dashboard).toHaveTextContent('parent: main');
 })

@@ -1,8 +1,8 @@
-import _ from 'lodash';
+import { dropRight } from '@lib';
 
-export const resolvePath = (currentPath, newPath, isAbsolute) =>
+export const resolvePath = (currentPath: string[], newPath: string[], isAbsolute: boolean) =>
 {
-	let fullPath
+	let fullPath: string[];
 	{
 		if(isAbsolute)
 			fullPath = newPath
@@ -17,11 +17,11 @@ export const resolvePath = (currentPath, newPath, isAbsolute) =>
 			if(newPath[0] === '..' || newPath[0] === '.')
 				fullPath = [...currentPath, ...newPath];
 			else
-				fullPath = [..._.dropRight(currentPath), ...newPath];
+				fullPath = [...dropRight(currentPath), ...newPath];
 		}
 	}
 
-	const stack = [];
+	const stack: number[] = [];
 
 	fullPath.forEach((pathToken, index) =>
 	{

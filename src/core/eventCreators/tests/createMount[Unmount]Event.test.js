@@ -30,8 +30,6 @@ beforeEach(() =>
                 params: nextMerge.params ?? prev.params
             }));
 
-    // $router.watch(router => console.log('[router]', router));
-
     createMountEvent = createMountEventFactory($router);
     createUnmountEvent = createUnmountEventFactory($router);
 })
