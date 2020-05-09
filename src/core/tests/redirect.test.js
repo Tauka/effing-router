@@ -31,7 +31,7 @@ beforeEach(() =>
       redirect: {
         condition: $isAdmin,
         to: {
-          path: ["main", "courses"],
+          routes: ["main", "courses"],
           params: { userId: 5 }
         }
       }
@@ -50,7 +50,7 @@ beforeEach(() =>
     }
   ]
 
-  $router = createStore({ path: [], params: {} });
+  $router = createStore({ routes: [], params: {} });
   wireRouter($router, routesList);
 })
 
@@ -66,14 +66,14 @@ test("router is triggered upon condition store change", () =>
   go('/dashboard');
 
   expect($router.getState()).toEqual({
-    path: ["dashboard"],
+    routes: ["dashboard"],
     params: {}
   })
 
   evAuth(true);
 
   expect($router.getState()).toEqual({
-    path: ["auth"],
+    routes: ["auth"],
     params: {}
   })
 })
@@ -83,14 +83,14 @@ test("router is triggered upon condition store change (object query)", () =>
   go('/auth');
 
   expect($router.getState()).toEqual({
-    path: ["auth"],
+    routes: ["auth"],
     params: {}
   })
 
   makeAdmin(true);
 
   expect($router.getState()).toEqual({
-    path: ["main", "courses"],
+    routes: ["main", "courses"],
     params: { userId: 5 }
   })
 })
@@ -98,11 +98,11 @@ test("router is triggered upon condition store change (object query)", () =>
 test("initial redirect", () =>
 {
   evAuth(true);
-  $router = createStore({ path: ["main", "dashboard"], params: {} });
+  $router = createStore({ routes: ["main", "dashboard"], params: {} });
   wireRouter($router, routesList);
 
   expect($router.getState()).toEqual({
-    path: ["main", "auth"],
+    routes: ["main", "auth"],
     params: {}
   })
 })

@@ -7,12 +7,12 @@ import { Router, ObjectQuery, RoutesConfiguration, Query } from './types';
 export const connectRouteApi = ($router: Router, routesCfg: RoutesConfiguration) =>
 {
 	$router
-		.on([go, replace, set] as any, (route: ObjectQuery, newPath: Query) =>
+		.on([go, replace, set] as any, (route: ObjectQuery, newRoute: Query) =>
 		{
 			return pipe(
 				goByType,
 				checkConditions(routesCfg)
-			)(newPath, route);
+			)(newRoute, route);
 		})
 		.on(back, noop);
 }

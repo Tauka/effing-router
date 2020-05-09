@@ -6,7 +6,7 @@ let $router;
 
 const initialRouteObject =
 {
-    path: ['main', 'dashboard'],
+    routes: ['main', 'dashboard'],
     params: { userId: 5 }
 };
 
@@ -17,7 +17,7 @@ beforeEach(() =>
     $router = createStore(initialRouteObject)
         .on(go, (prev, nextMerge) => (
             {
-                path: [...prev.path, ...(nextMerge.path ?? [])],
+                routes: [...prev.routes, ...(nextMerge.path ?? [])],
                 params: { ...prev.params, ...(nextMerge.params ?? {}) }
             }));
 })
@@ -45,6 +45,6 @@ test('[string] does not fire on other updates', () =>
 
     expect(watchMock.mock.calls.length).toBe(1);
 
-    go({ path: [], params: { otherParam: 'positive' }});
+    go({ routes: [], params: { otherParam: 'positive' }});
     expect(watchMock.mock.calls.length).toBe(1);
 })

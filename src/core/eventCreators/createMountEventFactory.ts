@@ -16,7 +16,7 @@ export const createMountEventFactory = ($router: Router) => (mountCfg: MountConf
 }
 
 const handleString = ($router: Router, mountCfg: string) => {
-    const $path = $router.map(({ path }) => path);
+    const $path = $router.map(({ routes: path }) => path);
     const $mountIndex = $path.map(p => p.findIndex(token => token === mountCfg));
 
     return sample(
@@ -27,19 +27,19 @@ const handleString = ($router: Router, mountCfg: string) => {
 }
 
 const handleObject = ($router: Router, mountCfg: ObjectQuery) => {
-    const { path, params } = mountCfg;
+    const { routes, params } = mountCfg;
 
     return sample(
     {
         source: $router,
         clock: guard(duplexStore($router), { filter: ({ prev, next }) => 
         {
-            if(path && params)
-                return pathCheck(prev.path, next.path, path)
+            if(routes && params)
+                return pathCheck(prev.routes, next.routes, routes)
                     && paramsMatch(next.params, params)
 
-            if(path)
-                return pathCheck(prev.path, next.path, path)
+            if(routes)
+                return pathCheck(prev.routes, next.routes, routes)
 
             if(params)
                 return paramsMatch(next.params, params);

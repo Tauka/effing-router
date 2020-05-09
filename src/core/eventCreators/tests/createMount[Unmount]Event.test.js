@@ -9,7 +9,7 @@ let createUnmountEvent;
 
 const initialRouteObject =
 {
-    path: ['main', 'dashboard'],
+    routes: ['main', 'dashboard'],
     params: { userId: 5 }
 };
 
@@ -21,12 +21,12 @@ beforeEach(() =>
     $router = createStore(initialRouteObject)
         .on(go, (prev, nextMerge) => (
             {
-                path: [...prev.path, ...(nextMerge.path ?? [])],
+                routes: [...prev.routes, ...(nextMerge.routes ?? [])],
                 params: { ...prev.params, ...(nextMerge.params ?? {}) }
             }))
         .on(goAbs, (prev, nextMerge) => (
             {
-                path: nextMerge.path ?? prev.path,
+                routes: nextMerge.routes ?? prev.routes,
                 params: nextMerge.params ?? prev.params
             }));
 
@@ -49,11 +49,11 @@ test('[createMountEvent] [] => [route]', () =>
     const watchMock = jest.fn();
     evSchoolMount.watch(watchMock)
 
-    go({ path: ['school'] });
+    go({ routes: ['school'] });
     expect(watchMock).toHaveBeenCalledTimes(1);
     expect(watchMock).toHaveBeenLastCalledWith(
     {
-        path: ['main', 'dashboard', 'school'],
+        routes: ['main', 'dashboard', 'school'],
         params: { userId: 5 }
     });
 })
@@ -61,7 +61,7 @@ test('[createMountEvent] [] => [route]', () =>
 test('[createMountEvent] { path }', () =>
 {
     const evMainMount = createMountEvent({
-        path: ['walterWhite'],
+        routes: ['walterWhite'],
         params: { userId: 5 }
     });
 
@@ -70,7 +70,7 @@ test('[createMountEvent] { path }', () =>
 
     expect(mountWatch).toHaveBeenCalledTimes(0);
 
-    go({ path: ['walterWhite'] });
+    go({ routes: ['walterWhite'] });
     expect(mountWatch).toHaveBeenCalledTimes(1);
 })
 
@@ -97,7 +97,7 @@ test('[createMountEvent] { params }', () =>
 test('[createMountEvent] { path, params }', () =>
 {
     const evMainMount = createMountEvent({
-        path: ['walterWhite', 'gusFring'],
+        routes: ['walterWhite', 'gusFring'],
         params: {
             meth: false,
             jpinkman: true
@@ -113,16 +113,16 @@ test('[createMountEvent] { path, params }', () =>
     expect(mountWatch).toHaveBeenCalledTimes(0);
     go({ params: { jpinkman: true } });
     expect(mountWatch).toHaveBeenCalledTimes(0);
-    go({ path: ['walterWhite'] });
+    go({ routes: ['walterWhite'] });
     expect(mountWatch).toHaveBeenCalledTimes(0);
-    go({ path: ['gusFring'] });
+    go({ routes: ['gusFring'] });
     expect(mountWatch).toHaveBeenCalledTimes(1);
 })
 
 test('[createMountEvent] move path index', () =>
 {
     const evMainMount = createMountEvent({
-        path: ['walterWhite', 'gusFring']
+        routes: ['walterWhite', 'gusFring']
     });
 
     const mountWatch = jest.fn();
@@ -130,9 +130,9 @@ test('[createMountEvent] move path index', () =>
 
     expect(mountWatch).toHaveBeenCalledTimes(0);
 
-    go({ path: ['walterWhite', 'gusFring'] });
+    go({ routes: ['walterWhite', 'gusFring'] });
     expect(mountWatch).toHaveBeenCalledTimes(1);
-    go({ path: ['lalo'] });
+    go({ routes: ['lalo'] });
     expect(mountWatch).toHaveBeenCalledTimes(1);
 })
 
@@ -144,11 +144,11 @@ test('[createUnmountEvent] [route] => []', () =>
 
     expect(watchMock).toHaveBeenCalledTimes(0);
 
-    goAbs({ path: ['school'] });
+    goAbs({ routes: ['school'] });
     expect(watchMock).toHaveBeenCalledTimes(1);
     expect(watchMock).toHaveBeenLastCalledWith(
     {
-        path: ['school'],
+        routes: ['school'],
         params: { userId: 5 }
     });
 })
@@ -165,7 +165,7 @@ test('[createUnmountEvent] [route1, route2] => [route2, route1]', () =>
     expect(mountWatch).toHaveBeenCalledTimes(0);
     expect(unmountWatch).toHaveBeenCalledTimes(0);
 
-    goAbs({ path: ['dashboard', 'main'] });
+    goAbs({ routes: ['dashboard', 'main'] });
     expect(mountWatch).toHaveBeenCalledTimes(1);
     expect(unmountWatch).toHaveBeenCalledTimes(1);
 })
@@ -173,7 +173,7 @@ test('[createUnmountEvent] [route1, route2] => [route2, route1]', () =>
 test('[createUnmountEvent] removing one of the path tokens', () =>
 {
     const evMainUnmount = createUnmountEvent({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: true,
         mclarens: false
@@ -186,7 +186,7 @@ test('[createUnmountEvent] removing one of the path tokens', () =>
     expect(unmountWatch).toHaveBeenCalledTimes(0);
 
     goAbs({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: true,
         mclarens: false
@@ -194,7 +194,7 @@ test('[createUnmountEvent] removing one of the path tokens', () =>
     });
     expect(unmountWatch).toHaveBeenCalledTimes(0);
     goAbs({
-      path: ['monica'],
+      routes: ['monica'],
       params: {
         centralPerk: true,
         mclarens: false
@@ -202,21 +202,21 @@ test('[createUnmountEvent] removing one of the path tokens', () =>
     });
     expect(unmountWatch).toHaveBeenCalledTimes(1);
     goAbs({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: false,
         mclarens: false
       }
     });
     expect(unmountWatch).toHaveBeenCalledTimes(1);
-    goAbs({ path: ['joey'] })
+    goAbs({ routes: ['joey'] })
     expect(unmountWatch).toHaveBeenCalledTimes(1);
 })
 
 test('[createUnmountEvent] removing/changing one of the params', () =>
 {
     const evMainUnmount = createUnmountEvent({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: true,
         mclarens: false
@@ -229,7 +229,7 @@ test('[createUnmountEvent] removing/changing one of the params', () =>
     expect(unmountWatch).toHaveBeenCalledTimes(0);
 
     goAbs({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: true,
         mclarens: false
@@ -237,7 +237,7 @@ test('[createUnmountEvent] removing/changing one of the params', () =>
     });
     expect(unmountWatch).toHaveBeenCalledTimes(0);
     goAbs({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         mclarens: false
       }
@@ -245,7 +245,7 @@ test('[createUnmountEvent] removing/changing one of the params', () =>
     expect(unmountWatch).toHaveBeenCalledTimes(1);
     // mount
     goAbs({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: true,
         mclarens: false
@@ -253,21 +253,21 @@ test('[createUnmountEvent] removing/changing one of the params', () =>
     });
     //unmount
     goAbs({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: false,
         mclarens: false
       }
     });
     expect(unmountWatch).toHaveBeenCalledTimes(2);
-    goAbs({ path: ['joey'] })
+    goAbs({ routes: ['joey'] })
     expect(unmountWatch).toHaveBeenCalledTimes(2);
 })
 
 test('[createUnmountEvent] moving path', () =>
 {
     const evMainUnmount = createUnmountEvent({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: true,
         mclarens: false
@@ -279,7 +279,7 @@ test('[createUnmountEvent] moving path', () =>
 
     expect(unmountWatch).toHaveBeenCalledTimes(0);
     goAbs({
-      path: ['monica', 'chandler'],
+      routes: ['monica', 'chandler'],
       params: {
         centralPerk: true,
         mclarens: false
@@ -287,7 +287,7 @@ test('[createUnmountEvent] moving path', () =>
     });
     expect(unmountWatch).toHaveBeenCalledTimes(0);
     go({
-      path: ['ross', 'monica', 'chandler'],
+      routes: ['ross', 'monica', 'chandler'],
       params: {
         centralPerk: false,
         mclarens: false

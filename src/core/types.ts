@@ -4,7 +4,7 @@ import React from 'react';
 export type Path = string[];
 export type Params = {[a: string]: string | number};
 export type ObjectQuery = {
-	path: Path;
+	routes: Path;
   params: Params;
   replace?: boolean;
 }

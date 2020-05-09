@@ -17,8 +17,8 @@ const handleString = ($router: Router, unmountCfg: string) => {
     const evUnmount = guard(duplexStore($router), {
         filter: ({ next, prev }) =>
         {
-            const prevIdx = prev.path.findIndex(t => t === unmountCfg);
-            const nextIdx = next.path.findIndex(t => t === unmountCfg);
+            const prevIdx = prev.routes.findIndex(t => t === unmountCfg);
+            const nextIdx = next.routes.findIndex(t => t === unmountCfg);
 
             if(prevIdx === -1)
                 return false;
@@ -35,24 +35,24 @@ const handleString = ($router: Router, unmountCfg: string) => {
 }
 
 const handleObject = ($router: Router, unmountCfg: ObjectQuery) => {
-    const { path: targetPath, params: targetParams } = unmountCfg;
+    const { routes: targetRoutes, params: targetParams } = unmountCfg;
 
     const evUnmount = guard(duplexStore($router), 
     {
         filter: ({ next, prev }) =>
         {
-            const prevPathTargetStartMatchIndex = prev.path.findIndex(token => token === targetPath[0]);
-            const nextPathTargetStartMatchIndex = next.path.findIndex(token => token === targetPath[0]);
-            const didPrevPathMatch = fullPathMatch(prev.path, prevPathTargetStartMatchIndex, targetPath);
-            const didNextPathMatch = fullPathMatch(next.path, nextPathTargetStartMatchIndex, targetPath);
+            const prevPathTargetStartMatchIndex = prev.routes.findIndex(token => token === targetRoutes[0]);
+            const nextPathTargetStartMatchIndex = next.routes.findIndex(token => token === targetRoutes[0]);
+            const didPrevPathMatch = fullPathMatch(prev.routes, prevPathTargetStartMatchIndex, targetRoutes);
+            const didNextPathMatch = fullPathMatch(next.routes, nextPathTargetStartMatchIndex, targetRoutes);
             const didPrevParamsMatch = paramsMatch(prev.params, targetParams);
             const didNextParamsMatch = paramsMatch(next.params, targetParams);
 
-            if(targetPath && targetParams)
+            if(targetRoutes && targetParams)
                 return (didPrevPathMatch && didPrevParamsMatch)
                     && (!didNextPathMatch || !didNextParamsMatch)
 
-            if(targetPath)
+            if(targetRoutes)
                 return didPrevPathMatch && !didNextPathMatch;
 
             if(targetParams)

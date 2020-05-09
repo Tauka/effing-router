@@ -4,13 +4,13 @@ import { ObjectQuery, Router } from './types';
 
 export const $router: Router =  createStore<ObjectQuery>(
 {
-	path: [],
+	routes: [],
 	params: {}
 });
 
 $router.watch(router => console.log('[router]', router))
 
-export const $path = $router.map(r => r.path);
+export const $path = $router.map(r => r.routes);
 export const $params = $router.map(r => r.params);
 
 export const router = {

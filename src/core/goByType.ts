@@ -21,7 +21,7 @@ const goFunction = (newPath: FunctionQuery, route: ObjectQuery) =>
 
 const goObject = (newPath: ObjectQuery, route: ObjectQuery) => {
 	return {
-		path: [...dropRight(route.path), ...newPath.path],
+		routes: [...dropRight(route.routes), ...newPath.routes],
 		params: {
 			...route.params,
 			...newPath.params
@@ -33,7 +33,7 @@ const goString = (newPath: StringQuery, route: ObjectQuery) =>
 {
 	const newRoute = parseArgs(newPath);
 	return {
-		path: resolvePath(route.path, newRoute.path, newRoute.isAbsolute),
+		routes: resolvePath(route.routes, newRoute.path, newRoute.isAbsolute),
 		params: newRoute.params
 	}
 }

@@ -3,18 +3,18 @@ import { goByType } from './goByType';
 
 export const checkConditions = (routesCfg: RoutesConfiguration) => (route: ObjectQuery) =>
 {
-    const { path, params } = route;
-    const newPath = [];
+    const { routes, params } = route;
+    const newRoutes = [];
     const newParams = params;
-    for (let i = 0; i < path.length; i++) {
-        newPath.push(path[i])
-        const { redirect } = routesCfg[path[i]];
+    for (let i = 0; i < routes.length; i++) {
+        newRoutes.push(routes[i])
+        const { redirect } = routesCfg[routes[i]];
         if(redirect !== undefined && redirect.condition.getState())
             return goByType(redirect.to, {
-                path: newPath,
+                routes: newRoutes,
                 params: newParams
             });
     }
 
-    return { path: newPath, params: newParams };
+    return { routes: newRoutes, params: newParams };
 }

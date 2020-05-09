@@ -13,11 +13,11 @@ export const initializeRouter = (router: RouterConfiguration, routesList: Routes
 	connectRouteApi($, routesCfg);
 
 	// initial redirect
-	go(({ path, params }) =>
+	go(({ routes: path, params }) =>
 	{
-			const afterCheck = checkConditions(routesCfg)({ path, params });
+			const afterCheck = checkConditions(routesCfg)({ routes: path, params });
 			return {
-					path: afterCheck.path,
+					routes: afterCheck.routes,
 					params: afterCheck.params,
 					replace: true
 			};

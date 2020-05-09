@@ -1,19 +1,19 @@
 import { RoutesConfiguration, RoutesList, Route } from './types';
 
 /**
- * Creates pathToken-routeCfg map
+ * Creates routeToken-routeCfg map
  * @example
  * {
- *   quiz: [{ path: 'quiz', params, ... }]
+ *   quiz: [{ routes: 'quiz', params, ... }]
  * }
 */
-const parseRoutePath = (cfg: RoutesConfiguration, route: Route) =>
+const parseRouteTokens = (cfg: RoutesConfiguration, route: Route) =>
 {
-	const pathToken = route.name;
-	if(cfg[pathToken])
-		throw Error(`Path "${pathToken}" is already declared`);
+	const routeToken = route.name;
+	if(cfg[routeToken])
+		throw Error(`Route "${routeToken}" is already declared`);
 
-	cfg[pathToken] = route;
+	cfg[routeToken] = route;
 };
 
 export const createRoutesConfig = (routesList: RoutesList) =>
@@ -26,7 +26,7 @@ export const createRoutesConfig = (routesList: RoutesList) =>
 		if(!route.component)
 			throw Error(`Missing required route property "component" at ${idx} index`);
 
-		parseRoutePath(cfg, route);
+		parseRouteTokens(cfg, route);
 		return cfg;
 	}, {});
 };

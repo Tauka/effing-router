@@ -10,7 +10,7 @@ export const bindDom = (router: RouterConfiguration, basename: string) =>
 	$.watch(go, (route: ObjectQuery, go: Query) =>
 	{
 		const stringPath = buildPath(
-			route.path,
+			route.routes,
 			route.params);
 
 		if(typeof go === 'object' && go.replace)
@@ -22,7 +22,7 @@ export const bindDom = (router: RouterConfiguration, basename: string) =>
 	$.watch(replace, route =>
 	{
 		const stringPath = buildPath(
-			route.path,
+			route.routes,
 			route.params);
 
 		browserHistoryReplace(route, stringPath, basename);
