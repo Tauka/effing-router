@@ -30,10 +30,10 @@ beforeEach(() =>
       component: () => {},
       redirect: {
         condition: $isAdmin,
-        to: {
+        to: () => ({
           routes: ["main", "courses"],
           params: { userId: 5 }
-        }
+        })
       }
     },
     {
@@ -63,7 +63,7 @@ const wireRouter = ($router, routesList) =>
 
 test("router is triggered upon condition store change", () =>
 {
-  go('/dashboard');
+  go('dashboard');
 
   expect($router.getState()).toEqual({
     routes: ["dashboard"],
@@ -80,7 +80,7 @@ test("router is triggered upon condition store change", () =>
 
 test("router is triggered upon condition store change (object query)", () =>
 {
-  go('/auth');
+  go('auth');
 
   expect($router.getState()).toEqual({
     routes: ["auth"],

@@ -27,7 +27,7 @@ test("redirect if condition is met, and drop children", () =>
 
   expect(newRoute).toEqual({
     routes: ["dashboard", "auth"],
-    params: {}
+    params: { userId: 5 }
   })
 })
 
@@ -44,7 +44,7 @@ test("object query notation", () =>
   const newRoute = checkConditions(routesCfg)({ routes: path, params });
 
   expect(newRoute).toEqual({
-    routes: ["dashboard", "auth", "promo"],
+    routes: ["dashboard", "main", "auth", "promo"],
     params: { userId: 5, tab: "login" }
   })
 })

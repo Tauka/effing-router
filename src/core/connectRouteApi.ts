@@ -1,7 +1,7 @@
 import { go, replace, set, back } from './events';
 import { checkConditions } from './checkConditions';
 import { pipe, noop } from '@lib';
-import { goByType } from './goByType';
+import { goQuery } from './goQuery';
 import { Router, ObjectQuery, RoutesConfiguration, Query } from './types';
 
 export const connectRouteApi = ($router: Router, routesCfg: RoutesConfiguration) =>
@@ -10,7 +10,7 @@ export const connectRouteApi = ($router: Router, routesCfg: RoutesConfiguration)
 		.on([go, replace, set] as any, (route: ObjectQuery, newRoute: Query) =>
 		{
 			return pipe(
-				goByType,
+				goQuery,
 				checkConditions(routesCfg)
 			)(newRoute, route);
 		})

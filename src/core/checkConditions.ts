@@ -1,5 +1,5 @@
 import { ObjectQuery, RoutesConfiguration } from './types';
-import { goByType } from './goByType';
+import { goQuery } from './goQuery';
 
 export const checkConditions = (routesCfg: RoutesConfiguration) => (route: ObjectQuery) =>
 {
@@ -10,7 +10,7 @@ export const checkConditions = (routesCfg: RoutesConfiguration) => (route: Objec
         newRoutes.push(routes[i])
         const { redirect } = routesCfg[routes[i]];
         if(redirect !== undefined && redirect.condition.getState())
-            return goByType(redirect.to, {
+            return goQuery(redirect.to, {
                 routes: newRoutes,
                 params: newParams
             });
