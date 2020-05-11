@@ -1,31 +1,53 @@
 import { buildPath } from '../buildPath';
 
-test("basic buildPath", () =>
-{
-  const path = ["main", "dashboard"];
-  const params = {
-    userId: 3,
-    courseId: 6
-  }
+const routesConfig = {
+  main: {
+    name: 'main',
+    children:
+    {
+      dashboard: {
+        name: 'dashboard',
+        path: '/welcome'
+      },
+      course: {
+        name: 'course',
+        path: '/lesson/:lessonId'
+      },
+      home: {
+        name: 'home',
+        path: '/this/is/my/home/:userId/:partyId/wow/that/:sessionId/cool/:is'
+      }
+    }
+  },
+}
 
-  expect(buildPath(path, params)).toBe('/main/dashboard?userId=3&courseId=6')
-})
-
-test("only path", () =>
+test("simple path defined", () =>
 {
   const path = ["main", "dashboard"];
   const params = {}
 
-  expect(buildPath(path, params)).toBe('/main/dashboard')
+  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/welcome')
 })
 
-test("only params", () =>
+test("path with params", () =>
 {
-  const path = [];
+  const path = ["main", "course"];
   const params = {
-    userId: 3,
-    courseId: 6
+    lessonId: 5
   }
 
-  expect(buildPath(path, params)).toBe('/?userId=3&courseId=6')
+  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/lesson/5')
+})
+
+test("complex path with params", () =>
+{
+  const path = ["main", "home"];
+  const params = {
+    userId: 5,
+    partyId: 6,
+    sessionId: 7,
+    is: 8
+  }
+
+  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/this/is/my/home/5/6/wow/that/7/cool/8')
 })

@@ -1,4 +1,5 @@
-import { Path, Params } from '@core/types';
+import { Path, Params, ObjectQuery, Route, RoutesObject } from '@core/types';
+import { routeObjectPath } from '@lib';
 
 const renderPath = (pathTokens: Path) =>
 {
@@ -22,10 +23,34 @@ const renderParams = (paramsObj: Params) =>
 	return `?${stringParams}`;
 }
 
-export const buildPath = (pathTokens: Path, paramsObj: Params) =>
+const parsePath = (path: string, params: Params) => {
+	const splitPath = path.split('/');
+	const paramTokens = splitPath
+		.filter(token => token.includes(':'))
+
+	let resultPath = path;
+	paramTokens.forEach(paramToken => {
+		const cleanToken = paramToken.replace(':', '');
+		const paramValue = params[cleanToken];
+
+		if(paramValue === undefined)
+			throw Error(`Param ${paramToken} is not defined`)
+
+		resultPath = resultPath.replace(paramToken, String(params[cleanToken]));
+	})
+
+	return resultPath;
+}
+
+export const buildPath = ({ routes, params }: ObjectQuery, routesConfig: RoutesObject) =>
 {
-	return renderPath(pathTokens) +
-		renderParams(paramsObj);
+	const grandestChild = routeObjectPath(routesConfig, routes) as Route;
+
+	if(grandestChild.path)
+		return parsePath(grandestChild.path, params);
+
+	return renderPath(routes) +
+		renderParams(params);
 };
 
 export default buildPath;

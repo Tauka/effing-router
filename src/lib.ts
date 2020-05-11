@@ -48,3 +48,18 @@ export const isFunctionQuery = (fn: any): fn is FunctionQuery => {
 export const isObjectQuery = (arg: any): arg is ObjectQuery => {
 	return typeof arg === 'object';
 }
+
+export const routeObjectPath: any = (obj: Record<string, any>, pathArr: string[]) => {
+	const path = pathArr[0];
+
+	if(pathArr.length === 1)
+		return obj[path]
+
+	if(typeof obj[path] !== 'object' || obj[path] === null)
+		throw Error(`Invalid path, expected route at ${path}`);
+
+	if(!obj[path].children)
+		throw Error(`Invalid path, expected childen at ${path}`);
+
+	return routeObjectPath(obj[path].children, pathArr.slice(1));
+}

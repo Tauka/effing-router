@@ -2,7 +2,7 @@ import { Store, Event } from 'effector';
 import React from 'react';
 
 export type Path = string[];
-export type Params = {[a: string]: string | number};
+export type Params = Record<string, string | number>;
 export type ObjectQuery = {
 	routes: Path;
   params: Params;
@@ -34,9 +34,21 @@ export interface Redirect {
 export interface Route {
   name: string;
   component: React.ComponentType<any>;
+  path: string;
+  children: [Route];
   redirect?: Redirect;
 }
+
+export interface RouteObject {
+  name: string;
+  component: React.ComponentType<any>;
+  path: string;
+  children: Record<string, Route>;
+  redirect?: Redirect;
+}
+
 export interface RoutesConfiguration {
   [a: string]: Route;
 }
 export type RoutesList = [Route];
+export type RoutesObject = Record<string, RouteObject>
