@@ -4,12 +4,13 @@ import { redirect } from './redirect';
 import { RoutesList, RouterConfiguration } from './types';
 import { checkConditions } from './checkConditions';
 import { go } from './events';
+import { routeListToObject } from './routeListToObject';
 
 export const initializeRouter = (router: RouterConfiguration, routesList: RoutesList) =>
 {
 	const { $ } = router;
 
-	const routesCfg = createRoutesConfig(routesList);
+	const routesCfg = routeListToObject(routesList);
 	connectRouteApi($, routesCfg);
 
 	// initial redirect

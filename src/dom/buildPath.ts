@@ -1,27 +1,16 @@
-import { Path, Params, ObjectQuery, Route, RoutesObject } from '@core/types';
+import { Path, Params, ObjectQuery, Route, RoutesConfiguration } from '@core/types';
 import { routeObjectPath } from '@lib';
 
-const renderPath = (pathTokens: Path) =>
+export const buildPath = ({ routes, params }: ObjectQuery, routesConfig: RoutesConfiguration) =>
 {
-	return '/' + pathTokens.join('/');
-}
+	const grandestChild = routeObjectPath(routesConfig, routes) as Route;
 
-const renderParams = (paramsObj: Params) =>
-{
-	const searchParams = new URLSearchParams();
+	if(grandestChild.path)
+		return parsePath(grandestChild.path, params);
 
-	Object.entries(paramsObj).forEach(([ key, val ]) =>
-	{
-		searchParams.set(key, String(val));
-	});
-
-	const stringParams = searchParams.toString();
-
-	if(!stringParams)
-		return '';
-
-	return `?${stringParams}`;
-}
+	return renderPath(routes) +
+		renderParams(params);
+};
 
 const parsePath = (path: string, params: Params) => {
 	const splitPath = path.split('/');
@@ -42,15 +31,24 @@ const parsePath = (path: string, params: Params) => {
 	return resultPath;
 }
 
-export const buildPath = ({ routes, params }: ObjectQuery, routesConfig: RoutesObject) =>
-{
-	const grandestChild = routeObjectPath(routesConfig, routes) as Route;
+const renderPath = (pathTokens: Path) => {
+	return '/' + pathTokens.join('/');
+}
 
-	if(grandestChild.path)
-		return parsePath(grandestChild.path, params);
+const renderParams = (paramsObj: Params) => {
+	const searchParams = new URLSearchParams();
 
-	return renderPath(routes) +
-		renderParams(params);
-};
+	Object.entries(paramsObj).forEach(([ key, val ]) =>
+	{
+		searchParams.set(key, String(val));
+	});
+
+	const stringParams = searchParams.toString();
+
+	if(!stringParams)
+		return '';
+
+	return `?${stringParams}`;
+}
 
 export default buildPath;

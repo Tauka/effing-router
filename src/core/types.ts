@@ -33,22 +33,19 @@ export interface Redirect {
 }
 export interface Route {
   name: string;
-  component: React.ComponentType<any>;
-  path: string;
-  children: [Route];
+  component?: React.ComponentType<any>;
+  path?: string;
+  children?: Array<Route>;
   redirect?: Redirect;
 }
 
 export interface RouteObject {
   name: string;
-  component: React.ComponentType<any>;
-  path: string;
-  children: Record<string, Route>;
+  component?: React.ComponentType<any>;
+  path?: string;
+  children?: Record<string, Route>;
   redirect?: Redirect;
 }
 
-export interface RoutesConfiguration {
-  [a: string]: Route;
-}
-export type RoutesList = [Route];
-export type RoutesObject = Record<string, RouteObject>
+export type RoutesConfiguration = Record<string, RouteObject>;
+export type RoutesList = Array<Route>;

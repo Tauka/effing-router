@@ -4,14 +4,12 @@ import { ObjectQuery, Query, RouterConfiguration, StringQuery } from 'src/core/t
 
 export const bindDom = (router: RouterConfiguration, basename: string) =>
 {
-	const { $, go, replace, set, back } = router;
+	const { $, go, replace, set, back, _cfg } = router;
 	const pathnameSet = pathnameFactory(set as Event<StringQuery>);
 
 	$.watch(go, (route: ObjectQuery, go: Query) =>
 	{
-		const stringPath = buildPath(
-			route.routes,
-			route.params);
+		const stringPath = buildPath(route, _cfg);
 
 		if(typeof go === 'object' && go.replace)
 			return browserHistoryReplace(route, stringPath, basename);
@@ -21,9 +19,7 @@ export const bindDom = (router: RouterConfiguration, basename: string) =>
 
 	$.watch(replace, route =>
 	{
-		const stringPath = buildPath(
-			route.routes,
-			route.params);
+		const stringPath = buildPath(route, _cfg);
 
 		browserHistoryReplace(route, stringPath, basename);
 	});
