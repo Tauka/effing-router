@@ -3,6 +3,7 @@ import { buildPath } from '../buildPath';
 const routesConfig = {
   main: {
     name: 'main',
+    path: '/',
     children:
     {
       dashboard: {
@@ -16,6 +17,9 @@ const routesConfig = {
       home: {
         name: 'home',
         path: '/this/is/my/home/:userId/:partyId/wow/that/:sessionId/cool/:is'
+      },
+      ratings: {
+        name: 'ratings'
       }
     }
   },
@@ -26,7 +30,8 @@ test("simple path defined", () =>
   const path = ["main", "dashboard"];
   const params = {}
 
-  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/welcome')
+  expect(buildPath({ routes: ["main", "dashboard"], params: {} }, routesConfig)).toBe('/welcome')
+  expect(buildPath({ routes: ['main'], params: {} }, routesConfig)).toBe('/')
 })
 
 test("path with params", () =>
@@ -50,4 +55,14 @@ test("complex path with params", () =>
   }
 
   expect(buildPath({ routes: path, params }, routesConfig)).toBe('/this/is/my/home/5/6/wow/that/7/cool/8')
+})
+
+test("no path at grandest child", () =>
+{
+  const path = ["main", "ratings"];
+  const params = {
+    userId: 5
+  }
+
+  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/main/ratings?userId=5')
 })

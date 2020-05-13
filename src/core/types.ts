@@ -49,3 +49,15 @@ export interface RouteObject {
 
 export type RoutesConfiguration = Record<string, RouteObject>;
 export type RoutesList = Array<Route>;
+export type PathList = {
+  path: string;
+  query: ObjectQuery;
+}[]
+export type PathListWithMatcher = {
+  path: string;
+  query: ObjectQuery;
+  matcher: {
+    keys: { name: string }[];
+    regexp: RegExp;
+  };
+}[]
