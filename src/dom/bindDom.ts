@@ -1,14 +1,23 @@
 import { Event } from 'effector';
 import buildPath from './buildPath';
-import { ObjectQuery, Query, RouterConfiguration, StringQuery } from 'src/core/types';
+import { ObjectQuery, Query, RouterConfiguration, RegexpList } from 'src/core/types';
+import { routesListToPathList } from './routesListToPathList';
+import { routesObjectToRoutesList } from './routesObjectToRoutesList';
+import { pipe } from '@lib';
+import { pathListToRegexpList } from './pathListToRegexpList';
+import { parsePath } from './parsePath';
 
 export const bindDom = (router: RouterConfiguration, basename: string) =>
 {
 	const { $, go, replace, set, back, _cfg } = router;
-	const pathnameSet = pathnameFactory(set as Event<StringQuery>);
+	const regexpList = pipe(
+		routesObjectToRoutesList,
+		routesListToPathList,
+		pathListToRegexpList
+	)(_cfg);
+	const pathnameSet = pathnameFactory(regexpList, set as Event<ObjectQuery>);
 
-	$.watch(go, (route: ObjectQuery, go: Query) =>
-	{
+	$.watch(go, (route: ObjectQuery, go: Query) => {
 		const stringPath = buildPath(route, _cfg);
 
 		if(typeof go === 'object' && go.replace)
@@ -17,22 +26,18 @@ export const bindDom = (router: RouterConfiguration, basename: string) =>
 		browserHistoryPush(route, stringPath, basename);
 	});
 
-	$.watch(replace, route =>
-	{
+	$.watch(replace, route => {
 		const stringPath = buildPath(route, _cfg);
-
 		browserHistoryReplace(route, stringPath, basename);
 	});
 
-	$.watch(back, () =>
-	{
+	$.watch(back, () => {
 		browserHistoryBack();
 	});
 
 	pathnameSet(basename);
 
-	window.onpopstate = () =>
-	{
+	window.onpopstate = () => {
 		pathnameSet(basename);
 	};
 };
@@ -56,10 +61,11 @@ const browserHistoryReplace = (route: ObjectQuery, stringPath: string, basename 
 		`${basename}${stringPath}`);
 };
 
-const pathnameFactory = (ev: Event<StringQuery>) => (basename: string) =>
+const pathnameFactory = (regexpList: RegexpList, ev: Event<ObjectQuery>) => (basename: string) =>
 {
-	if(basename && window.location.pathname.includes(basename))
-		ev(window.location.pathname.replace(basename, '') + window.location.search);
-	else
-		ev(window.location.pathname + window.location.search);
+	const stringPath = basename && window.location.pathname.includes(basename)
+		? window.location.pathname.replace(basename, '') + window.location.search
+		: window.location.pathname + window.location.search;
+
+	ev(parsePath(stringPath, regexpList));
 }

@@ -32,7 +32,7 @@ export const compact = (arr: any[]) =>
 
 export const pipe = <T extends any[], R>(
 	fn1: (...args: T) => R,
-	...fns: Array<(a: R) => R>
+	...fns: Array<(a: any) => any>
  ) => {
 	const piped = fns.reduce((prev, fn) => {
 		return (value: R) => prev(fn(value))

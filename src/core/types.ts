@@ -43,7 +43,7 @@ export interface RouteObject {
   name: string;
   component?: React.ComponentType<any>;
   path?: string;
-  children?: Record<string, Route>;
+  children?: Record<string, RouteObject>;
   redirect?: Redirect;
 }
 
@@ -51,11 +51,11 @@ export type RoutesConfiguration = Record<string, RouteObject>;
 export type RoutesList = Array<Route>;
 export type PathList = {
   path: string;
-  query: ObjectQuery;
+  routes: string[];
 }[]
-export type PathListWithMatcher = {
+export type RegexpList = {
   path: string;
-  query: ObjectQuery;
+  routes: string[];
   matcher: {
     keys: { name: string }[];
     regexp: RegExp;
