@@ -1,6 +1,7 @@
-export { initializeRouter } from './core/initializeRouter';
-import { router as baseRouter } from './core/router';
-import { createMountEvent, createUnmountEvent, createParamStore } from './core/eventCreators';
+export { initializeRouter } from '@core';
+import { createMountEvent, createUnmountEvent, createParamStore, router as baseRouter } from '@core';
+export * from './dom';
+export * from './view';
 
 export const router = {
     ...baseRouter,

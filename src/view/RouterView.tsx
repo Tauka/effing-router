@@ -38,6 +38,9 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentToken
 
 	const Component = routesCfg[token].component;
 
+	if(!Component)
+		throw new Error('Cannot find component');
+
 	return <Component {...extraProps} childRoute={childRoute}/>
 };
 

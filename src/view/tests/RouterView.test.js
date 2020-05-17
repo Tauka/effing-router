@@ -4,7 +4,7 @@ import { createStore } from 'effector';
 import { render } from '@testing-library/react'
 
 import { RouterView } from '../RouterView';
-import { createRoutesConfig } from '../../core/createRoutesConfig';
+import { routeListToObject } from '../../core/routeListToObject';
 
 const makeReactComponent = id =>
 {
@@ -34,7 +34,7 @@ const routesList = [
   }
 ];
 
-const routesCfg = createRoutesConfig(routesList);
+const routesCfg = routeListToObject(routesList);
 
 test("basic view", () =>
 {

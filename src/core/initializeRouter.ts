@@ -1,4 +1,3 @@
-import createRoutesConfig from './createRoutesConfig';
 import { connectRouteApi } from './connectRouteApi';
 import { redirect } from './redirect';
 import { RoutesList, RouterConfiguration } from './types';

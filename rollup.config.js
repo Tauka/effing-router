@@ -1,16 +1,24 @@
-import babel from 'rollup-plugin-babel';
-import { terser } from 'rollup-plugin-terser';
+import babel from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 export default {
-    input: "src/index.js",
+    input: "src/index.ts",
     output: {
-        file: "rollup-dist/index.js",
+        file: "dist/index.js",
         format: "esm"
     },
-    external: ["lodash"],
+    external: ['effector', 'effector-react', 'react', '@babel/runtime-corejs3'],
     plugins:
     [
-        babel({ runtimeHelpers: true }),
-        terser()
+        resolve({
+            extensions: ['.tsx', '.ts', '.js']
+        }),
+        commonjs(),
+        babel({
+            babelHelpers: 'runtime',
+            exclude: 'node_modules/**',
+            extensions: ['.ts', '.tsx']
+        })
     ],
 }

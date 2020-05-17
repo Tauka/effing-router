@@ -54,8 +54,6 @@ beforeEach(() =>
   wireRouter($router, routesList);
 })
 
-// const routesCfg = createRoutesConfig(routesList);
-
 const wireRouter = ($router, routesList) =>
 {
   initializeRouter({ $: $router }, routesList);

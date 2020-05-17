@@ -20,7 +20,7 @@ export const parsePath = (path: string, regexpList: RegexpList) => {
 
   if(!pathItem.matcher.keys.length)
     return {
-      routes: [],
+      routes: pathItem.routes,
       params: {}
     }
 
