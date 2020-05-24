@@ -1,21 +1,20 @@
 import { Event } from 'effector';
 import buildPath from './buildPath';
-import { ObjectQuery, Query, RouterConfiguration, RegexpList } from 'src/core/types';
+import { ObjectQuery, Query, RouterConfiguration, RegexpList, FunctionQuery } from 'src/core/types';
 import { routesListToPathList } from './routesListToPathList';
 import { routesObjectToRoutesList } from './routesObjectToRoutesList';
-import { pipe } from '@lib';
 import { pathListToRegexpList } from './pathListToRegexpList';
 import { parsePath } from './parsePath';
 
 export const bindDom = (router: RouterConfiguration, basename: string) =>
 {
-	const { $, go, replace, set, back, _cfg } = router;
-	const regexpList = pipe(
-		routesObjectToRoutesList,
-		routesListToPathList,
-		pathListToRegexpList
-	)(_cfg);
-	const pathnameSet = pathnameFactory(regexpList, set as Event<ObjectQuery>);
+	const { $, go, replace, back, _cfg } = router;
+
+	const routesList = routesObjectToRoutesList(_cfg);
+	const pathList = routesListToPathList(routesList);
+	const regexpList = pathListToRegexpList(pathList);
+
+	const pathnameSet = pathnameFactory(regexpList, replace as Event<FunctionQuery>);
 
 	$.watch(go, (route: ObjectQuery, go: Query) => {
 		const stringPath = buildPath(route, _cfg);
@@ -61,11 +60,11 @@ const browserHistoryReplace = (route: ObjectQuery, stringPath: string, basename 
 		`${basename}${stringPath}`);
 };
 
-const pathnameFactory = (regexpList: RegexpList, ev: Event<ObjectQuery>) => (basename: string) =>
+const pathnameFactory = (regexpList: RegexpList, ev: Event<FunctionQuery>) => (basename: string) =>
 {
 	const stringPath = basename && window.location.pathname.includes(basename)
 		? window.location.pathname.replace(basename, '') + window.location.search
 		: window.location.pathname + window.location.search;
 
-	ev(parsePath(stringPath, regexpList));
+	ev(() => parsePath(stringPath, regexpList));
 }

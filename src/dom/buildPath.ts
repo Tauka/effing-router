@@ -1,4 +1,4 @@
-import { Path, Params, ObjectQuery, Route, RoutesConfiguration } from '@core/types';
+import { Routes, Params, ObjectQuery, Route, RoutesConfiguration } from '@core/types';
 import { routeObjectPath } from '@lib';
 
 export const buildPath = ({ routes, params }: ObjectQuery, routesConfig: RoutesConfiguration) =>
@@ -8,8 +8,8 @@ export const buildPath = ({ routes, params }: ObjectQuery, routesConfig: RoutesC
 	if(grandestChild.path)
 		return parsePath(grandestChild.path, params);
 
-	return renderPath(routes) +
-		renderParams(params);
+	return renderDefaultPath(routes) +
+		renderDefaultParams(params);
 };
 
 const parsePath = (path: string, params: Params) => {
@@ -31,11 +31,11 @@ const parsePath = (path: string, params: Params) => {
 	return resultPath;
 }
 
-const renderPath = (pathTokens: Path) => {
+const renderDefaultPath = (pathTokens: Routes) => {
 	return '/' + pathTokens.join('/');
 }
 
-const renderParams = (paramsObj: Params) => {
+const renderDefaultParams = (paramsObj: Params) => {
 	const searchParams = new URLSearchParams();
 
 	Object.entries(paramsObj).forEach(([ key, val ]) =>

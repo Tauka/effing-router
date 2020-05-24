@@ -67,3 +67,28 @@ test("correct recursive path list", () => {
     },
   ])
 })
+
+const routesListNoPath =
+[
+	{
+		name: 'app',
+		redirect:
+		{
+			to: 'dashboard',
+		},
+		children: [
+			{
+				name: 'dashboard',
+			},
+			{
+				name: 'profile',
+			},
+			{
+				name: 'table',
+			}]
+	}
+]
+
+test("no path", () => {
+  expect(recursivelyFindDeepestPath(routesListNoPath, [])).toEqual([])
+})

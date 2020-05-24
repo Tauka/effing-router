@@ -1,5 +1,5 @@
 import { createStore, Store } from 'effector';
-import { FunctionQuery, ObjectQuery } from '@core/types';
+import { FunctionQuery, ObjectQuery, RoutesQuery, ParamsQuery } from '@core/types';
 
 export type Noop = () => {};
 
@@ -46,6 +46,18 @@ export const isFunctionQuery = (fn: any): fn is FunctionQuery => {
 }
 
 export const isObjectQuery = (arg: any): arg is ObjectQuery => {
+	return typeof arg === 'object'
+		&& 'routes' in arg
+		&& 'params' in arg;
+}
+
+export const isRoutesQuery = (arg: any): arg is RoutesQuery => {
+	return Array.isArray(arg)
+		&& 'routes' in arg
+		&& 'params' in arg;
+}
+
+export const isParamsQuery = (arg: any): arg is ParamsQuery => {
 	return typeof arg === 'object';
 }
 

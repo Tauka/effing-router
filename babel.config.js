@@ -18,8 +18,8 @@ module.exports = {
 		["module-resolver", {
       "root": ["./"],
       "alias": {
-				"@core": "./src/core/index.ts",
-				"@lib": "./src/lib.ts",
+				"@core": "./src/core/index.js",
+				"@lib": "./src/lib.js",
       }
     }]
 	],
@@ -27,15 +27,28 @@ module.exports = {
 	{
 	  test: 
 	  {
-		presets: 
-		[
+			presets: 
 			[
-				'@babel/env',
-				{
-					targets: { node: 'current' }
-				}
-			]
-		]
+				[
+					'@babel/env',
+					{
+						targets: { node: 'current' }
+					}
+				]
+			],
+			plugins: 
+			[
+				'@babel/plugin-transform-runtime',
+				"@babel/plugin-proposal-optional-chaining",
+				"@babel/plugin-proposal-nullish-coalescing-operator",
+				["module-resolver", {
+					"root": ["./"],
+					"alias": {
+						"@core": "./src/core/index.ts",
+						"@lib": "./src/lib.ts",
+					}
+				}]
+			],
 	  }
 	}
   };

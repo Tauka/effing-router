@@ -1,21 +1,27 @@
 import { createStore } from 'effector';
 
-import { checkConditions } from '../checkConditions';
+import { checkConditions } from '../redirect';
 
 const $isNotAuth = createStore(true);
 
 const routesCfg = 
 {
-  dashboard: { path: "dashboard" },
-  auth: { path: "auth" },
-  main: {
-    path: "main",
-    redirect: {
-      condition: $isNotAuth,
-      to: "auth"
+  dashboard: {
+    path: "dashboard",
+    children: {
+      main: {
+        path: "main",
+        redirect: {
+          condition: $isNotAuth,
+          to: "auth"
+        },
+        children: {
+          courses: { path: "courses" },
+        }
+      },
     }
   },
-  courses: { path: "courses" },
+  auth: { path: "auth" }
 }
 
 test("redirect if condition is met, and drop children", () =>
@@ -36,7 +42,7 @@ test("object query notation", () =>
   const path = ["dashboard", "main", "courses"];
   const params = { userId: 5 };
 
-  routesCfg.main.redirect.to = {
+  routesCfg.dashboard.children.main.redirect.to = {
     routes: ["auth", "promo"],
     params: { tab: "login" }
   }
@@ -44,7 +50,7 @@ test("object query notation", () =>
   const newRoute = checkConditions(routesCfg)({ routes: path, params });
 
   expect(newRoute).toEqual({
-    routes: ["dashboard", "main", "auth", "promo"],
-    params: { userId: 5, tab: "login" }
+    routes: ["auth", "promo"],
+    params: { tab: "login" }
   })
 })

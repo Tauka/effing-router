@@ -1,7 +1,8 @@
 import { RoutesList, PathList } from "@core/types";
 
 export const routesListToPathList = (routesList: RoutesList) => {
-  return recursivelyFindDeepestPath(routesList, []);
+  const recursiveResult = recursivelyFindDeepestPath(routesList, []);
+  return recursiveResult;
 }
 
 export const recursivelyFindDeepestPath = (routesList: RoutesList, routes: string[]) => {

@@ -8,8 +8,6 @@ export const $router: Router =  createStore<ObjectQuery>(
 	params: {}
 });
 
-$router.watch(router => console.log('[router]', router))
-
 export const $path = $router.map(r => r.routes);
 export const $params = $router.map(r => r.params);
 

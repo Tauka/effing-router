@@ -1,19 +1,21 @@
 import { Store, Event } from 'effector';
 import React from 'react';
 
-export type Path = string[];
+export type Routes = string[];
 export type Params = Record<string, string | number>;
 export type ObjectQuery = {
-	routes: Path;
+	routes: Routes;
   params: Params;
   replace?: boolean;
 }
 export type FunctionQuery = (a: ObjectQuery) => ObjectQuery;
 export type StringQuery = string;
+export type RoutesQuery = Routes;
+export type ParamsQuery = Params;
 export type Query = FunctionQuery | ObjectQuery | StringQuery;
 
 export type Router = Store<ObjectQuery>;
-export type RouterPath = Store<Path>;
+export type RouterPath = Store<Routes>;
 export type RouterParams = Store<Params>;
 export interface RouterConfiguration {
 	$: Router;

@@ -3,7 +3,7 @@ import { RoutesConfiguration, RoutesList, Route } from "@core/types";
 type routesConfigToRoutesList = (routesConfig: RoutesConfiguration) => RoutesList
 
 export const routesObjectToRoutesList: routesConfigToRoutesList = routesConfig => {
-  return Object.values(routesConfig).map(routeConfig => {
+  const routesList = Object.values(routesConfig).map(routeConfig => {
     if(routeConfig.children)
       return {
         ...routeConfig,
@@ -12,4 +12,6 @@ export const routesObjectToRoutesList: routesConfigToRoutesList = routesConfig =
 
     return routeConfig as Route
   })
+
+  return routesList;
 }

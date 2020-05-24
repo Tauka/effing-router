@@ -1,4 +1,4 @@
-import { restore, createEvent, createStore } from 'effector';
+import { restore, createEvent, createStore, clearNode } from 'effector';
 
 import { go } from '../events';
 import { initializeRouter } from '../initializeRouter';
@@ -39,10 +39,12 @@ beforeEach(() =>
     {
       name: "main",
       component: () => {},
-    },
-    {
-      name: "courses",
-      component: () => {},
+      children: [
+        {
+          name: "courses",
+          component: () => {},
+        }
+      ]
     },
     {
       name: "profile",
@@ -52,6 +54,14 @@ beforeEach(() =>
 
   $router = createStore({ routes: [], params: {} });
   wireRouter($router, routesList);
+})
+
+afterEach(() => {
+  clearNode(evAuth);
+  clearNode(makeAdmin);
+  clearNode($router);
+  clearNode($isNotAuth);
+  clearNode($isAdmin);
 })
 
 const wireRouter = ($router, routesList) =>
@@ -96,11 +106,25 @@ test("router is triggered upon condition store change (object query)", () =>
 test("initial redirect", () =>
 {
   evAuth(true);
-  $router = createStore({ routes: ["main", "dashboard"], params: {} });
+  $router = createStore({ routes: ["dashboard"], params: {} });
   wireRouter($router, routesList);
 
   expect($router.getState()).toEqual({
-    routes: ["main", "auth"],
+    routes: ["auth"],
+    params: {}
+  })
+})
+
+test("do not redirect if not in routes", () =>
+{
+  go('main');
+  expect($router.getState()).toEqual({
+    routes: ["main"],
+    params: {}
+  })
+  evAuth(true);
+  expect($router.getState()).toEqual({
+    routes: ["main"],
     params: {}
   })
 })

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStoreMap } from 'effector-react';
 
-import { RoutesConfiguration, RouterConfiguration, RouterPath } from '@core/types';
+import { RoutesConfiguration, RouterConfiguration, RouterPath, RouteObject } from '@core/types';
 
 type ExtraProps = {[a: string]: any};
 interface BuildComponentProps {
@@ -23,18 +23,21 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentToken
 		fn: (path, [tokenIdx]) => path[tokenIdx] ?? null
 	});
 
+	if(!token)
+		return null;
+
 	const childRoute = (props: ExtraProps) =>
 	{
+		if(!routesCfg[token].children)
+			return null;
+
 		return <BuildComponent
 			extraProps={props}
-			routesCfg={routesCfg}
+			routesCfg={routesCfg[token].children as Record<string, RouteObject>}
 			currentTokenIdx={currentTokenIdx + 1}
 			pathStore={pathStore}
 		/>;
 	}
-
-	if(!token)
-		return null;
 
 	const Component = routesCfg[token].component;
 

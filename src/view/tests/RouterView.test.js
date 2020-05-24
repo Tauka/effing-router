@@ -13,16 +13,18 @@ const makeReactComponent = id =>
 
 const routesList = [
   {
-    name: "dashboard",
-    component: makeReactComponent("dashboard")
-  },
-  {
     name: "auth",
     component: makeReactComponent("auth")
   },
   {
     name: "main",
-    component: makeReactComponent("main")
+    component: makeReactComponent("main"),
+    children: [
+      {
+        name: "dashboard",
+        component: makeReactComponent("dashboard")
+      },
+    ]
   },
   {
     name: "courses",

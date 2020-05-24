@@ -1,7 +1,6 @@
 import { connectRouteApi } from './connectRouteApi';
-import { redirect } from './redirect';
 import { RoutesList, RouterConfiguration } from './types';
-import { checkConditions } from './checkConditions';
+import { checkConditions, setupRedirects } from './redirect';
 import { go } from './events';
 import { routeListToObject } from './routeListToObject';
 
@@ -24,11 +23,6 @@ export const initializeRouter = (router: RouterConfiguration, routesList: Routes
 	});
 
 	// setup redirects on condition store change
-	routesList.forEach(route =>
-	{
-		if(route.redirect)
-			redirect(route.redirect);
-	})
-
+	setupRedirects($, routesList);
 	router._cfg = routesCfg;
 };

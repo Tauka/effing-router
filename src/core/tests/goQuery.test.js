@@ -10,13 +10,13 @@ test("function query full replace", () => {
   })
 })
 
-test("object query - full merge", () => {
+test("object query - full replace", () => {
   const initialRoute = { routes: ['main', 'dashboard'], params: { userId: 5 } };
   const query = { routes: ['walterWhite'], params: { courseId: 6 }}
 
   expect(goQuery(query, initialRoute)).toEqual({
-    routes: ['main', 'dashboard', 'walterWhite'],
-    params: { userId: 5, courseId: 6 }
+    routes: ['walterWhite'],
+    params: { courseId: 6 }
   })
 })
 

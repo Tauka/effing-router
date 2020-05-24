@@ -1,4 +1,23 @@
-import { RegexpList, ObjectQuery } from "@core/types";
+import { RegexpList, ObjectQuery, Params } from "@core/types";
+import { compact } from "@lib";
+
+const defaultParser = (path: string) => {
+ 	const [ pathTokensString, paramsTokensString ] = path.split('?')
+ 	const pathTokens = compact(pathTokensString.split('/'));
+ 	const searchParams = new URLSearchParams(paramsTokensString);
+ 	const paramsObj: Params = {};
+
+ 	for(const [ key, value ] of searchParams)
+ 	{
+ 		paramsObj[key] = value;
+ 	}
+
+ 	return {
+ 		routes: pathTokens,
+ 		params: paramsObj
+ 	};
+
+}
 
 export const parsePath = (path: string, regexpList: RegexpList) => {
   let execResult: RegExpExecArray | null= null;
@@ -13,10 +32,7 @@ export const parsePath = (path: string, regexpList: RegexpList) => {
   }
 
   if(execResult === null || pathItem === null)
-    return {
-      routes: [],
-      params: {}
-    }
+    return defaultParser(path);
 
   if(!pathItem.matcher.keys.length)
     return {

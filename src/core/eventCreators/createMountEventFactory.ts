@@ -1,6 +1,6 @@
 import { guard, sample } from 'effector';
 
-import { ObjectQuery, Router, Path, Params } from '@core/types';
+import { ObjectQuery, Router, Routes } from '@core/types';
 import { duplexStore } from '@lib';
 import { paramsMatch, fullPathMatch } from './lib';
 
@@ -49,7 +49,7 @@ const handleObject = ($router: Router, mountCfg: ObjectQuery) => {
     })
 }
 
-const pathCheck = (prevPath: Path, nextPath: Path, targetPath: Path) =>
+const pathCheck = (prevPath: Routes, nextPath: Routes, targetPath: Routes) =>
 {
     const nextPathTargetStartMatchIndex = nextPath.findIndex(token => token === targetPath[0]);
     const prevPathTargetStartMatchIndex = prevPath.findIndex(token => token === targetPath[0]);

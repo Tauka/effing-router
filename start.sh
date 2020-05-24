@@ -1,1 +1,1 @@
-npx babel src -w -d ./dist
+npx babel --extensions '.ts,.tsx' src -w -d ./dist

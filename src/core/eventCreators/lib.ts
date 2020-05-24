@@ -1,4 +1,4 @@
-import { Params, Path } from "@core/types";
+import { Params, Routes } from "@core/types";
 
 export const paramsMatch = (params: Params, targetParams: Params) =>
 {
@@ -10,7 +10,7 @@ export const paramsMatch = (params: Params, targetParams: Params) =>
     return true;
 }
 
-export const fullPathMatch = (path: Path, pathStartIndex: number, targetPath: Path) =>
+export const fullPathMatch = (path: Routes, pathStartIndex: number, targetPath: Routes) =>
 {
     if(pathStartIndex === -1)
         return false;
