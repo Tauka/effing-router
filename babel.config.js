@@ -18,8 +18,8 @@ module.exports = {
 		["module-resolver", {
       "root": ["./"],
       "alias": {
-				"@core": "./src/core/index.js",
-				"@lib": "./src/lib.js",
+				"@core": "./src/core/index.ts",
+				"@lib": "./src/lib.ts",
       }
     }]
 	],

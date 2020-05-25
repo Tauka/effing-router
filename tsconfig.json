@@ -13,7 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": true,
-    "declarationDir": "rollup-dist",
+    "declarationDir": "dist",
     "emitDeclarationOnly": true,
     "jsx": "react",
     "baseUrl": "./",
