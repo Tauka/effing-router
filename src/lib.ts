@@ -52,9 +52,7 @@ export const isObjectQuery = (arg: any): arg is ObjectQuery => {
 }
 
 export const isRoutesQuery = (arg: any): arg is RoutesQuery => {
-	return Array.isArray(arg)
-		&& 'routes' in arg
-		&& 'params' in arg;
+	return Array.isArray(arg);
 }
 
 export const isParamsQuery = (arg: any): arg is ParamsQuery => {
