@@ -1,1 +1,1 @@
-npx babel --extensions '.ts,.tsx' src -w -d ./dist
+NODE_ENV=dev npx babel --extensions '.ts,.tsx' src -w -d ./dist
