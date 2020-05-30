@@ -1,7 +1,6 @@
 import { connectRouteApi } from './connectRouteApi';
 import { RoutesList, RouterConfiguration } from './types';
-import { checkConditions, setupRedirects } from './redirect';
-import { go } from './events';
+import { setupRedirects, initialRedirect } from './redirect';
 import { routeListToObject } from './routeListToObject';
 
 export const initializeRouter = (router: RouterConfiguration, routesList: RoutesList) =>
@@ -10,19 +9,7 @@ export const initializeRouter = (router: RouterConfiguration, routesList: Routes
 
 	const routesCfg = routeListToObject(routesList);
 	connectRouteApi($, routesCfg);
-
-	// initial redirect
-	go(({ routes: path, params }) =>
-	{
-			const afterCheck = checkConditions(routesCfg)({ routes: path, params });
-			return {
-					routes: afterCheck.routes,
-					params: afterCheck.params,
-					replace: true
-			};
-	});
-
-	// setup redirects on condition store change
+	initialRedirect(routesCfg);
 	setupRedirects($, routesList);
 	router._cfg = routesCfg;
 };

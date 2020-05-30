@@ -2,7 +2,7 @@ import { guard, sample } from 'effector';
 
 import { duplexStore } from '@lib';
 import { Router, ObjectQuery } from '@core/types';
-import { paramsMatch, fullPathMatch } from './lib';
+import { paramsMatch, fullRoutesMatch } from './lib';
 
 export const createUnmountEventFactory = ($router: Router) => (unmountCfg: ObjectQuery | string) =>
 {
@@ -43,8 +43,8 @@ const handleObject = ($router: Router, unmountCfg: ObjectQuery) => {
         {
             const prevPathTargetStartMatchIndex = prev.routes.findIndex(token => token === targetRoutes[0]);
             const nextPathTargetStartMatchIndex = next.routes.findIndex(token => token === targetRoutes[0]);
-            const didPrevPathMatch = fullPathMatch(prev.routes, prevPathTargetStartMatchIndex, targetRoutes);
-            const didNextPathMatch = fullPathMatch(next.routes, nextPathTargetStartMatchIndex, targetRoutes);
+            const didPrevPathMatch = fullRoutesMatch(prev.routes, prevPathTargetStartMatchIndex, targetRoutes);
+            const didNextPathMatch = fullRoutesMatch(next.routes, nextPathTargetStartMatchIndex, targetRoutes);
             const didPrevParamsMatch = paramsMatch(prev.params, targetParams);
             const didNextParamsMatch = paramsMatch(next.params, targetParams);
 

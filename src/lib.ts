@@ -1,4 +1,4 @@
-import { createStore, Store } from 'effector';
+import { createStore, Store, combine } from 'effector';
 import { FunctionQuery, ObjectQuery, RoutesQuery, ParamsQuery } from '@core/types';
 
 export type Noop = () => {};

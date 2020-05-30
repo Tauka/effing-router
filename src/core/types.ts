@@ -20,7 +20,7 @@ export type RouterParams = Store<Params>;
 export interface RouterConfiguration {
 	$: Router;
   _cfg: RoutesConfiguration;
-  $path: RouterPath;
+  $routes: RouterPath;
   $params: RouterParams;
   go: Event<Query>;
   set: Event<Query>;

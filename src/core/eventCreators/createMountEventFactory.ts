@@ -2,7 +2,7 @@ import { guard, sample } from 'effector';
 
 import { ObjectQuery, Router, Routes } from '@core/types';
 import { duplexStore } from '@lib';
-import { paramsMatch, fullPathMatch } from './lib';
+import { paramsMatch, fullRoutesMatch } from './lib';
 
 type MountConfiguration = ObjectQuery | string;
 
@@ -16,8 +16,8 @@ export const createMountEventFactory = ($router: Router) => (mountCfg: MountConf
 }
 
 const handleString = ($router: Router, mountCfg: string) => {
-    const $path = $router.map(({ routes: path }) => path);
-    const $mountIndex = $path.map(p => p.findIndex(token => token === mountCfg));
+    const $routes = $router.map(({ routes }) => routes);
+    const $mountIndex = $routes.map(p => p.findIndex(token => token === mountCfg));
 
     return sample(
     {
@@ -53,8 +53,8 @@ const pathCheck = (prevPath: Routes, nextPath: Routes, targetPath: Routes) =>
 {
     const nextPathTargetStartMatchIndex = nextPath.findIndex(token => token === targetPath[0]);
     const prevPathTargetStartMatchIndex = prevPath.findIndex(token => token === targetPath[0]);
-    const didPrevPathMatch = fullPathMatch(prevPath, prevPathTargetStartMatchIndex, targetPath);
-    const didNextPathMatch = fullPathMatch(nextPath, nextPathTargetStartMatchIndex, targetPath);
+    const didPrevPathMatch = fullRoutesMatch(prevPath, prevPathTargetStartMatchIndex, targetPath);
+    const didNextPathMatch = fullRoutesMatch(nextPath, nextPathTargetStartMatchIndex, targetPath);
 
     // if it's no longer in path
     if(nextPathTargetStartMatchIndex === -1)

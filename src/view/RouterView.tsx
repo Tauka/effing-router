@@ -52,6 +52,6 @@ export const RouterView: React.FC<RouterViewProps> = ({ routerConfig }) =>
 	return <BuildComponent
 		routesCfg={routerConfig._cfg}
 		currentTokenIdx={0}
-		pathStore={routerConfig.$path}
+		pathStore={routerConfig.$routes}
 	/>;
 };
