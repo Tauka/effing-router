@@ -73,3 +73,7 @@ export const routeObjectPath: any = (obj: Record<string, any>, pathArr: string[]
 
 	return routeObjectPath(obj[path].children, pathArr.slice(1));
 }
+
+export const every = (...booleanStores: Store<boolean>[]) => {
+	return combine(booleanStores, storeValues => storeValues.every(v => v));
+}

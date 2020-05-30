@@ -1,6 +1,7 @@
 import { forward, guard } from 'effector';
 import { go } from '../events';
 import { Redirect, RoutesList, Router, Route } from '../types';
+import { every } from '@lib';
 
 export const setupRedirects = ($router: Router, routesList: RoutesList) => {
   routesList.forEach(route => {
@@ -18,7 +19,7 @@ export const redirect = ($router: Router, route: Route) =>
           routeName === route.name))
 
   forward({
-      from: guard(condition, { filter: $isCurrentRouteInRouter }),
+      from: guard(condition, { filter: every($isCurrentRouteInRouter, condition) }),
       to: go.prepend(() => to)
   })
 }
