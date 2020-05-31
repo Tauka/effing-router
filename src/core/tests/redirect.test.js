@@ -34,7 +34,13 @@ beforeEach(() =>
           routes: ["main", "courses"],
           params: { userId: 5 }
         })
-      }
+      },
+      children: [
+        {
+          name: "signin",
+          component: () => {}
+        }
+      ]
     },
     {
       name: "main",
@@ -126,5 +132,20 @@ test("do not redirect if not in routes", () =>
   expect($router.getState()).toEqual({
     routes: ["main"],
     params: {}
+  })
+})
+
+
+test("redirect upper level", () =>
+{
+  go(['auth', 'signin']);
+  expect($router.getState()).toEqual({
+    routes: ["auth", "signin"],
+    params: {}
+  })
+  makeAdmin(true);
+  expect($router.getState()).toEqual({
+    routes: ["main", "courses"],
+    params: { userId: 5 }
   })
 })
