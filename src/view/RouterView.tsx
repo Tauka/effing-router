@@ -39,10 +39,13 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentToken
 		/>;
 	}
 
+	if(!routesCfg[token])
+		throw new Error(`Cannot find route ${token} in path [${pathStore.getState()}]`);
+
 	const Component = routesCfg[token].component;
 
 	if(!Component)
-		throw new Error('Cannot find component');
+		throw new Error(`Cannot find component in "${token}"`);
 
 	return <Component {...extraProps} childRoute={childRoute}/>
 };
