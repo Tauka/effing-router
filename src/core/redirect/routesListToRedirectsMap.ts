@@ -2,7 +2,11 @@ import { RoutesList, Redirect } from '@core/types';
 
 type RedirectsMap = Record<string, Redirect>;
 
-export const routesListToRedirectsMap = (prefix: string, routesList: RoutesList): RedirectsMap  => {
+export const routesListToRedirectsMap = (routesList: RoutesList)  => {
+  return collectRedirectsRecursively('', routesList);
+};
+
+const collectRedirectsRecursively = (prefix: string, routesList: RoutesList) => {
   const mapPrefix = prefix
     ? `${prefix}.` : '';
   return routesList.reduce<RedirectsMap>((redirectsMap, routeObject) => {
@@ -13,9 +17,9 @@ export const routesListToRedirectsMap = (prefix: string, routesList: RoutesList)
     if(routeObject.children)
       redirectsMap = {
         ...redirectsMap,
-        ...routesListToRedirectsMap(key, routeObject.children)
+        ...collectRedirectsRecursively(key, routeObject.children)
       };
 
     return redirectsMap;
   }, {});
-}; 
+}

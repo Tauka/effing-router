@@ -40,10 +40,10 @@ const routesCfg = routeListToObject(routesList);
 
 test("basic view", () =>
 {
-  const $path = createStore(['main', 'dashboard']);
+  const $routes = createStore(['main', 'dashboard']);
   const router = {
     _cfg: routesCfg,
-    $path
+    $routes
   }
 
   const { container } = render(<RouterView routerConfig={router}/>)
@@ -52,10 +52,10 @@ test("basic view", () =>
 
 test("passing props to children", () =>
 {
-  const $path = createStore(['main', 'dashboard']);
+  const $routes = createStore(['main', 'dashboard']);
   const router = {
     _cfg: routesCfg,
-    $path
+    $routes
   }
 
   const { container } = render(<RouterView routerConfig={router}/>)

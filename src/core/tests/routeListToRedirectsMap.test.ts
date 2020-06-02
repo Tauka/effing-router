@@ -1,9 +1,9 @@
 import { createStore } from 'effector';
 
+import { routesListToRedirectsMap } from '../redirect/routesListToRedirectsMap';
+
 const $isAuth = createStore(true);
 const $hasScoresPerm = createStore(true);
-
-import { routesListToRedirectsMap } from '../routeListToRedirectsMap';
 
 const mainRedirect = {
   to: () => ({ routes: ['profile'], params: {} }),
@@ -39,7 +39,7 @@ const routesList = [
 ]
 
 test("converts routes list to redirects map", () => {
-  const redirectsMap = routesListToRedirectsMap('', routesList);
+  const redirectsMap = routesListToRedirectsMap(routesList);
   expect(redirectsMap.main).toBe(mainRedirect);
   expect(redirectsMap.profile).toBe(profileRedirect);
   expect(redirectsMap['profile.scores']).toBe(scoresRedirect);
