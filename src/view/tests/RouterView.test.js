@@ -46,7 +46,7 @@ test("basic view", () =>
     $routes
   }
 
-  const { container } = render(<RouterView routerConfig={router}/>)
+  const { container } = render(<RouterView router={router}/>)
   expect(container).toHaveDOMNesting(['main', 'dashboard']);
 })
 
@@ -58,7 +58,7 @@ test("passing props to children", () =>
     $routes
   }
 
-  const { container } = render(<RouterView routerConfig={router}/>)
+  const { container } = render(<RouterView router={router}/>)
   const dashboard = container.querySelector("#dashboard");
   expect(dashboard).toHaveTextContent('parent: main');
 })

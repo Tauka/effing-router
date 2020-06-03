@@ -1,27 +1,23 @@
 import React from 'react';
-import { useStoreMap } from 'effector-react';
+import { useStore } from 'effector-react';
 
-import { RoutesConfiguration, RouterConfiguration, RouterPath, RouteObject } from '@core/types';
+import { RoutesConfiguration, RouterConfiguration, RouteObject } from '@core/types';
 
 type ExtraProps = {[a: string]: any};
 interface BuildComponentProps {
 	routesCfg: RoutesConfiguration;
 	currentTokenIdx: number;
-	pathStore: RouterPath;
 	extraProps?: ExtraProps;
+	routes: string[];
 }
 
 interface RouterViewProps {
-	routerConfig: RouterConfiguration;
+	router: RouterConfiguration;
 }
 
-const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentTokenIdx, pathStore, extraProps }) =>
+const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentTokenIdx, extraProps, routes }) =>
 {
-	const token = useStoreMap({
-		store: pathStore,
-		keys: [currentTokenIdx],
-		fn: (path, [tokenIdx]) => path[tokenIdx] ?? null
-	});
+	const token = routes[currentTokenIdx];
 
 	if(!token)
 		return null;
@@ -35,12 +31,12 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentToken
 			extraProps={props}
 			routesCfg={routesCfg[token].children as Record<string, RouteObject>}
 			currentTokenIdx={currentTokenIdx + 1}
-			pathStore={pathStore}
+			routes={routes}
 		/>;
 	}
 
 	if(!routesCfg[token])
-		throw new Error(`Cannot find route ${token} in path [${pathStore.getState()}]`);
+		throw new Error(`Cannot find route ${token} in path [${routes}]`);
 
 	const Component = routesCfg[token].component;
 
@@ -50,11 +46,13 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentToken
 	return <Component {...extraProps} childRoute={childRoute}/>
 };
 
-export const RouterView: React.FC<RouterViewProps> = ({ routerConfig }) =>
+export const RouterView: React.FC<RouterViewProps> = ({ router }) =>
 {
+	const routes = useStore(router.$routes);
+
 	return <BuildComponent
-		routesCfg={routerConfig._cfg}
+		routesCfg={router._cfg}
 		currentTokenIdx={0}
-		pathStore={routerConfig.$routes}
+		routes={routes}
 	/>;
 };
