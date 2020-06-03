@@ -1,6 +1,6 @@
 import { restore, createEvent, createStore, clearNode } from 'effector';
 
-import { go } from '../events';
+import { go, replace } from '../events';
 import { initializeRouter } from '../initializeRouter';
 
 let evAuth;
@@ -112,8 +112,12 @@ test("router is triggered upon condition store change (object query)", () =>
 test("initial redirect", () =>
 {
   evAuth(true);
-  $router = createStore({ routes: ["dashboard"], params: {} });
+  $router = createStore({ routes: [], params: {} });
   wireRouter($router, routesList);
+  replace(() => ({
+    routes: ["dashboard"],
+    params: {}
+  }))
 
   expect($router.getState()).toEqual({
     routes: ["auth"],
@@ -135,7 +139,6 @@ test("do not redirect if not in routes", () =>
   })
 })
 
-
 test("redirect upper level", () =>
 {
   go(['auth', 'signin']);
@@ -144,6 +147,16 @@ test("redirect upper level", () =>
     params: {}
   })
   makeAdmin(true);
+  expect($router.getState()).toEqual({
+    routes: ["main", "courses"],
+    params: { userId: 5 }
+  })
+})
+
+test("redirect on go", () =>
+{
+  makeAdmin(true);
+  go(['auth', 'signin']);
   expect($router.getState()).toEqual({
     routes: ["main", "courses"],
     params: { userId: 5 }
