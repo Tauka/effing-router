@@ -2,7 +2,7 @@ import { Store, Event } from 'effector';
 import React from 'react';
 
 export type Routes = string[];
-export type Params = Record<string, string | number>;
+export type Params = Record<string, string | number | boolean | null>;
 export type ObjectQuery = {
 	routes: Routes;
   params: Params;

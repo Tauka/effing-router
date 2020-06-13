@@ -6,26 +6,33 @@ export const buildPath = ({ routes, params }: ObjectQuery, routesConfig: RoutesC
 	const grandestChild = routeObjectPath(routesConfig, routes) as Route;
 
 	if(grandestChild.path)
-		return parsePath(grandestChild.path, params);
+		return compilePath(grandestChild.path, params);
 
 	return renderDefaultPath(routes) +
 		renderDefaultParams(params);
 };
 
-const parsePath = (path: string, params: Params) => {
+const compilePath = (path: string, params: Params) => {
 	const splitPath = path.split('/');
 	const paramTokens = splitPath
 		.filter(token => token.includes(':'))
+	const used: Record<string, boolean> = {};
 
 	let resultPath = path;
 	paramTokens.forEach(paramToken => {
 		const cleanToken = paramToken.replace(':', '');
 		const paramValue = params[cleanToken];
+		used[cleanToken] = true;
 
 		if(paramValue === undefined)
 			throw Error(`Param ${paramToken} is not defined`)
 
 		resultPath = resultPath.replace(paramToken, String(params[cleanToken]));
+	})
+
+	Object.keys(params).forEach(paramKey => {
+		if(!used.hasOwnProperty(paramKey))
+			console.warn(`Param ${paramKey} was not used in path`)
 	})
 
 	return resultPath;
