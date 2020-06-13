@@ -20,6 +20,18 @@ const routesConfig = {
       },
       ratings: {
         name: 'ratings'
+      },
+      games: {
+        name: 'games',
+        path: '/last/of/us?chapter=chapterNum&mainHero'
+      },
+      hotel: {
+        name: 'hoten',
+        path: 'hotel?'
+      },
+      complex: {
+        name: 'complex',
+        path: '/complex/:pathId/woah?userId=personId'
       }
     }
   },
@@ -77,4 +89,45 @@ test("path with unused params", () =>
   }
 
   expect(buildPath({ routes: path, params }, routesConfig)).toBe('/lesson/5?bookId=3&roomId=2')
+})
+
+test("path with query params", () =>
+{
+  const path = ["main", "games"];
+  const params = {
+    chapterNum: 2,
+    mainHero: 'ellie',
+  }
+
+  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/last/of/us?chapter=2&mainHero=ellie')
+})
+
+test("path with no slash and query mark, but no params", () =>
+{
+  const path = ["main", "hotel"];
+  const params = {}
+
+  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/hotel')
+})
+
+test("itemId and queryId", () =>
+{
+  const path = ["main", "complex"];
+  const params = {
+    pathId: 3,
+    personId: 2
+  }
+
+  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/complex/3/woah?userId=2')
+})
+
+
+test("insufficient keys", () =>
+{
+  const path = ["main", "complex"];
+  const params = {
+    pathId: 3
+  }
+
+  expect(() => buildPath({ routes: path, params }, routesConfig)).toThrowError('Param personId is not defined')
 })

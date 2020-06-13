@@ -1,5 +1,5 @@
 import { Event } from 'effector';
-import buildPath from './buildPath';
+import { buildPath } from './buildPath';
 import { ObjectQuery, Query, RouterConfiguration, RegexpList, FunctionQuery } from 'src/core/types';
 import { routesListToPathList } from './routesListToPathList';
 import { routesObjectToRoutesList } from './routesObjectToRoutesList';
