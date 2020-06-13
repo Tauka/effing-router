@@ -1,16 +1,25 @@
 import { guard, sample } from 'effector';
 
-import { duplexStore } from '@lib';
-import { Router, ObjectQuery } from '@core/types';
+import { duplexStore, isRoutesQuery, isPartialObjectQuery } from '@lib';
+import { Router, ObjectQuery, RoutesQuery } from '@core/types';
 import { paramsMatch, fullRoutesMatch } from './lib';
 
-export const createUnmountEventFactory = ($router: Router) => (unmountCfg: ObjectQuery | string) =>
+export const createUnmountEventFactory = ($router: Router) => (unmountCfg: ObjectQuery | string | RoutesQuery) =>
 {
     if(typeof unmountCfg === 'string')
         return handleString($router, unmountCfg);
 
-    if(typeof unmountCfg === 'object' && unmountCfg !== null)
+    if(isRoutesQuery(unmountCfg))
+        return handleArray($router, unmountCfg);
+
+    if(isPartialObjectQuery(unmountCfg))
         return handleObject($router, unmountCfg);
+}
+
+const handleArray = ($router: Router, mountCfg: RoutesQuery) => {
+    return handleObject($router, {
+        routes: mountCfg
+    })
 }
 
 const handleString = ($router: Router, unmountCfg: string) => {
@@ -34,7 +43,7 @@ const handleString = ($router: Router, unmountCfg: string) => {
     })
 }
 
-const handleObject = ($router: Router, unmountCfg: ObjectQuery) => {
+const handleObject = ($router: Router, unmountCfg: Partial<ObjectQuery>) => {
     const { routes: targetRoutes, params: targetParams } = unmountCfg;
 
     const evUnmount = guard(duplexStore($router), 

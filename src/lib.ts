@@ -51,6 +51,11 @@ export const isObjectQuery = (arg: any): arg is ObjectQuery => {
 		&& 'params' in arg;
 }
 
+export const isPartialObjectQuery = (arg: any): arg is ObjectQuery => {
+	return typeof arg === 'object'
+		&& ('routes' in arg || 'params' in arg);
+}
+
 export const isRoutesQuery = (arg: any): arg is RoutesQuery => {
 	return Array.isArray(arg);
 }

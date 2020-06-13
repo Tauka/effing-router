@@ -136,6 +136,21 @@ test('[createMountEvent] move path index', () =>
     expect(mountWatch).toHaveBeenCalledTimes(1);
 })
 
+test('[createMountEvent] array', () =>
+{
+    const evMainMount = createMountEvent(['walterWhite', 'gusFring']);
+
+    const mountWatch = jest.fn();
+    evMainMount.watch(mountWatch);
+
+    expect(mountWatch).toHaveBeenCalledTimes(0);
+
+    go({ routes: ['walterWhite', 'gusFring'] });
+    expect(mountWatch).toHaveBeenCalledTimes(1);
+    go({ routes: ['lalo'] });
+    expect(mountWatch).toHaveBeenCalledTimes(1);
+})
+
 test('[createUnmountEvent] [route] => []', () =>
 {
     const evMainMount = createUnmountEvent('main');
@@ -293,5 +308,21 @@ test('[createUnmountEvent] moving path', () =>
         mclarens: false
       }
     });
+    expect(unmountWatch).toHaveBeenCalledTimes(1);
+})
+
+test('[createUnmountEvent] array', () =>
+{
+    const evMainUnmount = createUnmountEvent(['monica', 'chandler']);
+
+    const unmountWatch = jest.fn();
+    evMainUnmount.watch(unmountWatch);
+
+    expect(unmountWatch).toHaveBeenCalledTimes(0);
+    goAbs({ routes: ['monica', 'chandler'] });
+    goAbs({ routes: ['ross', 'monica', 'chandler'] });
+    go({ routes: ['ross', 'monica', 'chandler'] });
+    expect(unmountWatch).toHaveBeenCalledTimes(0);
+    goAbs({ routes: ['chandler', 'monica'] });
     expect(unmountWatch).toHaveBeenCalledTimes(1);
 })
