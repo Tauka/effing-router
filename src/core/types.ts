@@ -8,7 +8,7 @@ export type ObjectQuery = {
   params: Params;
   replace?: boolean;
 }
-export type FunctionQuery = (a: ObjectQuery) => ObjectQuery;
+export type FunctionQuery = (a: ObjectQuery) => Partial<ObjectQuery> | RoutesQuery | ParamsQuery;
 export type StringQuery = string;
 export type RoutesQuery = Routes;
 export type ParamsQuery = Params;

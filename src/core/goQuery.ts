@@ -1,5 +1,5 @@
 import { Query, ObjectQuery, FunctionQuery, StringQuery, RoutesQuery, ParamsQuery } from './types';
-import { isFunctionQuery, isObjectQuery, dropRight, isRoutesQuery, isParamsQuery } from '@lib';
+import { isFunctionQuery, isObjectQuery, dropRight, isRoutesQuery, isParamsQuery, isPartialObjectQuery } from '@lib';
 
 export const goQuery = (newPath: Query, route: ObjectQuery) =>
 {
@@ -20,7 +20,31 @@ export const goQuery = (newPath: Query, route: ObjectQuery) =>
 
 const goFunction = (newPath: FunctionQuery, route: ObjectQuery) =>
 {
-	return newPath(route);
+	const nextRoute = newPath(route);
+
+	if(!nextRoute)
+		throw new Error('router.go expects function that returns object or array');
+
+	if(isPartialObjectQuery(nextRoute))
+		return {
+			routes: [...route.routes],
+			params: { ...route.params },
+			...nextRoute
+		};
+
+	if(isRoutesQuery(nextRoute))
+		return {
+			routes: [...nextRoute],
+			params: {}
+		}
+
+	if(isParamsQuery(nextRoute))
+		return {
+			routes: [...route.routes],
+			params: {...nextRoute}
+		}
+
+	return nextRoute;
 }
 
 const goObject = (newPath: ObjectQuery) => {

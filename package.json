@@ -1,6 +1,6 @@
 {
   "name": "effing-router",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Feature-centric router for effector applications",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -61,6 +61,7 @@
     "eslint-plugin-typescript": "^0.14.0",
     "jest": "^25.3.0",
     "most": "^1.8.0",
+    "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rollup": "^2.3.4",
     "rollup-plugin-babel": "^4.4.0",
