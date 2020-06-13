@@ -66,3 +66,15 @@ test("no path at grandest child", () =>
 
   expect(buildPath({ routes: path, params }, routesConfig)).toBe('/main/ratings?userId=5')
 })
+
+test("path with unused params", () =>
+{
+  const path = ["main", "course"];
+  const params = {
+    lessonId: 5,
+    bookId: 3,
+    roomId: 2
+  }
+
+  expect(buildPath({ routes: path, params }, routesConfig)).toBe('/lesson/5?bookId=3&roomId=2')
+})

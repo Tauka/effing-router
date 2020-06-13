@@ -9,7 +9,7 @@ export const buildPath = ({ routes, params }: ObjectQuery, routesConfig: RoutesC
 		return compilePath(grandestChild.path, params);
 
 	return renderDefaultPath(routes) +
-		renderDefaultParams(params);
+		renderQueryParams(params);
 };
 
 const compilePath = (path: string, params: Params) => {
@@ -30,19 +30,25 @@ const compilePath = (path: string, params: Params) => {
 		resultPath = resultPath.replace(paramToken, String(params[cleanToken]));
 	})
 
-	Object.keys(params).forEach(paramKey => {
-		if(!used.hasOwnProperty(paramKey))
-			console.warn(`Param ${paramKey} was not used in path`)
-	})
-
+	const unusedParams = collectUnusedParams(params, used);
+	resultPath += renderQueryParams(unusedParams);
 	return resultPath;
+}
+
+const collectUnusedParams = (params: Params, used: Record<string, boolean>) => {
+	return Object.entries(params).reduce<Params>((unusedParams, [ paramKey, paramVal ]) => {
+		if(!used.hasOwnProperty(paramKey))
+			unusedParams[paramKey] = paramVal;
+
+		return unusedParams;
+	}, {})
 }
 
 const renderDefaultPath = (pathTokens: Routes) => {
 	return '/' + pathTokens.join('/');
 }
 
-const renderDefaultParams = (paramsObj: Params) => {
+const renderQueryParams = (paramsObj: Params) => {
 	const searchParams = new URLSearchParams();
 
 	Object.entries(paramsObj).forEach(([ key, val ]) =>
