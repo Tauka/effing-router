@@ -40,7 +40,7 @@ const goString = (newPath: StringQuery, route: ObjectQuery) =>
 
 const goRoutes = (newPath: RoutesQuery, route: ObjectQuery) => {
 	return {
-		routes: [...route.routes, ...newPath],
+		routes: [...newPath],
 		params: { ...route.params }
 	}
 }
