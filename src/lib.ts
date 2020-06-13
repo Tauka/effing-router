@@ -71,10 +71,10 @@ export const routeObjectPath: any = (obj: Record<string, any>, pathArr: string[]
 		return obj[path]
 
 	if(typeof obj[path] !== 'object' || obj[path] === null)
-		throw Error(`Invalid path, expected route at ${path}`);
+		throw new Error(`Invalid path, expected route at ${path}`);
 
 	if(!obj[path].children)
-		throw Error(`Invalid path, expected childen at ${path}`);
+		throw new Error(`Invalid path, expected childen at ${path}`);
 
 	return routeObjectPath(obj[path].children, pathArr.slice(1));
 }
