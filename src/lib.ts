@@ -82,3 +82,16 @@ export const routeObjectPath: any = (obj: Record<string, any>, pathArr: string[]
 export const every = (...booleanStores: Store<boolean>[]) => {
 	return combine(booleanStores, storeValues => storeValues.every(v => v));
 }
+
+export const isSubset = <T>(superset: T[], subset: T[]) => {
+	const firstKeyMatch = superset.findIndex(supersetItem => supersetItem === subset[0]);
+	if(firstKeyMatch === undefined)
+		return false;
+
+	for (let i = 0; i < subset.length; i++) {
+		if(superset[i + firstKeyMatch] !== subset[i])
+			return false;
+	}
+
+	return true;
+}

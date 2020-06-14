@@ -175,9 +175,11 @@ test("redirect on go", () =>
 
 test("nested redirect", () =>
 {
-  console.log('is admin', $isAdmin.getState());
-  console.log('is not auth', $isNotAuth.getState());
   go(['profile', 'scores']);
+  expect($router.getState()).toEqual({
+    routes: ["profile", "scores"],
+    params: {}
+  })
   evNotAuth(true);
   expect($router.getState()).toEqual({
     routes: ["auth", "signin"],

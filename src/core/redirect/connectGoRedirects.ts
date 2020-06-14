@@ -1,11 +1,9 @@
 import { sample, Store, forward, createStore } from 'effector';
 
-import { routesListToRedirectsMap } from './routesListToRedirectsMap';
-import { RoutesList, Router, Redirect, Query, Routes } from '@core/types';
+import { Router, Redirect, Query, Routes } from '@core/types';
 import { go } from '../events';
 
-export const connectGoRedirects = ($router: Router, routesList: RoutesList) => {
-  const redirectsMap = routesListToRedirectsMap(routesList);
+export const connectGoRedirects = ($router: Router, redirectsMap: Record<string, Redirect>) => {
   const redirectStores = redirectsMapToRedirectsStores(redirectsMap);
   const $redirectToken = createStore<string | null>(null);
   sample({
