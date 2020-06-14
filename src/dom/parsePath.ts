@@ -18,7 +18,7 @@ export const parsePath = (path: string, regexpList: RegexpList) => {
 
   if(execResult === null || pathItem === null)
     return {
-      routes: defaultRoutesParser(path),
+      routes: defaultRoutesParser(pathWithoutSearch),
       params: searchParamsObject
     }
 
