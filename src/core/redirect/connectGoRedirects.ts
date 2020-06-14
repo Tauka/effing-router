@@ -1,7 +1,7 @@
 import { sample, Store, forward, createStore } from 'effector';
 
 import { routesListToRedirectsMap } from './routesListToRedirectsMap';
-import { RoutesList, Router, Redirect, Query } from '@core/types';
+import { RoutesList, Router, Redirect, Query, Routes } from '@core/types';
 import { go } from '../events';
 
 export const connectGoRedirects = ($router: Router, routesList: RoutesList) => {
@@ -12,8 +12,7 @@ export const connectGoRedirects = ($router: Router, routesList: RoutesList) => {
     source: redirectStores,
     clock: $router,
     fn: (redirectStores, router) => {
-      return router.routes.find(routeName =>
-        redirectStores[routeName]);
+      return findTruthyRedirectKey(redirectStores, router.routes);
     },
     target: $redirectToken
   });
@@ -29,4 +28,19 @@ const redirectsMapToRedirectsStores = (redirectsMap: Record<string, Redirect>) =
     redirectStores[key] = value.condition;
     return redirectStores;
   }, {})
+}
+
+const findTruthyRedirectKey = (redirectStores: Record<string, boolean>, routes: Routes) => {
+  let redirectStoreKey = ''
+  for(let i = 0; i < routes.length; i++) {
+    if(i === 0)
+      redirectStoreKey += routes[i];
+    else
+      redirectStoreKey += '.' + routes[i];
+
+    if(redirectStores[redirectStoreKey])
+      return redirectStoreKey;
+  }
+
+  return undefined;
 }

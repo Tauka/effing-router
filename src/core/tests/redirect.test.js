@@ -3,7 +3,7 @@ import { restore, createEvent, createStore, clearNode } from 'effector';
 import { go, replace } from '../events';
 import { initializeRouter } from '../initializeRouter';
 
-let evAuth;
+let evNotAuth;
 let makeAdmin;
 let $isNotAuth;
 let $isAdmin;
@@ -11,9 +11,9 @@ let routesList;
 let $router = null;
 beforeEach(() =>
 {
-  evAuth = createEvent();
+  evNotAuth = createEvent();
   makeAdmin = createEvent();
-  $isNotAuth = restore(evAuth, false);
+  $isNotAuth = restore(evNotAuth, false);
   $isAdmin = restore(makeAdmin, false);
 
   routesList = [
@@ -55,6 +55,16 @@ beforeEach(() =>
     {
       name: "profile",
       component: () => {},
+      children: [
+        {
+          name: "scores",
+          component: () => {},
+          redirect: {
+            condition: $isNotAuth,
+            to: ["auth", "signin"]
+          }
+        }
+      ]
     }
   ]
 
@@ -63,7 +73,7 @@ beforeEach(() =>
 })
 
 afterEach(() => {
-  clearNode(evAuth);
+  clearNode(evNotAuth);
   clearNode(makeAdmin);
   clearNode($router);
   clearNode($isNotAuth);
@@ -84,7 +94,7 @@ test("router is triggered upon condition store change", () =>
     params: {}
   })
 
-  evAuth(true);
+  evNotAuth(true);
 
   expect($router.getState()).toEqual({
     routes: ["auth"],
@@ -111,7 +121,7 @@ test("router is triggered upon condition store change (object query)", () =>
 
 test("initial redirect", () =>
 {
-  evAuth(true);
+  evNotAuth(true);
   $router = createStore({ routes: [], params: {} });
   wireRouter($router, routesList);
   replace(() => ({
@@ -132,7 +142,7 @@ test("do not redirect if not in routes", () =>
     routes: ["main"],
     params: {}
   })
-  evAuth(true);
+  evNotAuth(true);
   expect($router.getState()).toEqual({
     routes: ["main"],
     params: {}
@@ -160,5 +170,17 @@ test("redirect on go", () =>
   expect($router.getState()).toEqual({
     routes: ["main", "courses"],
     params: { userId: 5 }
+  })
+})
+
+test("nested redirect", () =>
+{
+  console.log('is admin', $isAdmin.getState());
+  console.log('is not auth', $isNotAuth.getState());
+  go(['profile', 'scores']);
+  evNotAuth(true);
+  expect($router.getState()).toEqual({
+    routes: ["auth", "signin"],
+    params: {}
   })
 })
