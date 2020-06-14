@@ -2,16 +2,11 @@
 // escapes a regexp string (borrowed from path-to-regexp sources)
 const escapeRx = (str: string) => str.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
 
-// returns a segment representation in RegExp based on flags
-// adapted and simplified version from path-to-regexp sources
-const rxForSegment = (repeat: boolean, optional: boolean, prefix: 1 | 0) => {
-  let capture = repeat ? "((?:[^\\/]+?)(?:\\/(?:[^\\/]+?))*)" : "([^\\/]+?)";
-  if (optional && prefix) capture = "(?:\\/" + capture + ")";
-  return capture + (optional ? "?" : "");
-};
-
+// borrowed from wouter and modified
+// https://github.com/molefrog/wouter/blob/master/matcher.js#L37
 export const pathToRegexp = (pattern: string) => {
-  const groupRx = /:([A-Za-z0-9_]+)([?+*]?)/g;
+  const groupRx = /:([A-Za-z0-9_]+)/g;
+  const rxForSegment = "([^\/]+?)";
 
   let match = null,
     lastIndex = 0,
@@ -20,22 +15,11 @@ export const pathToRegexp = (pattern: string) => {
   const keys = [];
 
   while ((match = groupRx.exec(pattern)) !== null) {
-    const [_, segment, mod] = match;
-
-    // :foo  [1]      (  )
-    // :foo? [0 - 1]  ( o)
-    // :foo+ [1 - ∞]  (r )
-    // :foo* [0 - ∞]  (ro)
-    const repeat = mod === "+" || mod === "*";
-    const optional = mod === "?" || mod === "*";
-    const prefix = optional && pattern[match.index - 1] === "/" ? 1 : 0;
-
-    const prev = pattern.substring(lastIndex, match.index - prefix);
-
+    const [_, segment] = match;
+    const prev = pattern.substring(lastIndex, match.index);
     keys.push({ name: segment });
     lastIndex = groupRx.lastIndex;
-
-    result += escapeRx(prev) + rxForSegment(repeat, optional, prefix);
+    result += escapeRx(prev) + rxForSegment;
   }
 
   result += escapeRx(pattern.substring(lastIndex));

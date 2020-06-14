@@ -48,3 +48,17 @@ test("complex path", () => {
     }
   })
 })
+
+test("parse search params", () => {
+  expect(parsePath('/this/is/my/home/3/4/wow/that/5/cool/6?homeId=5&phoneId=3', regexpList)).toEqual({
+    routes: ['main', 'home'],
+    params: { 
+      userId: '3',
+      partyId: '4',
+      sessionId: '5',
+      is: '6',
+      homeId: '5',
+      phoneId: '3'
+    }
+  })
+})

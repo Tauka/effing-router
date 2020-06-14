@@ -27,7 +27,8 @@ test("pathToRegexp with multiple params", () => {
 })
 
 test("complex path", () => {
-  const { keys } = pathToRegexp('/this/is/my/home/:userId/:partyId/wow/that/:sessionId/cool/:is');
+  const { keys, regexp } = pathToRegexp('/this/is/my/home/:userId/:partyId/wow/that/:sessionId/cool/:is');
 
   expect(keys.length).toBe(4);
+  expect(regexp.exec('/this/is/my/home/5/6/wow/that/7/cool/8')).not.toBe(null);
 })
