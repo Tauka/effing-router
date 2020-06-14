@@ -14,7 +14,8 @@
     "build:src": "rollup -c",
     "lint": "eslint '*/**/*.{ts,tsx}'",
     "build:types": "rollup -c rollup.typescript.config.js",
-    "build": "rm -rf dist && npm run build:types && npm run build:src"
+    "build": "rm -rf dist && npm run build:types && npm run build:src",
+    "publish": "npm run build && npm publish"
   },
   "keywords": [
     "effector",
