@@ -32,11 +32,27 @@ const routesList = [
   {
     name: 'logout',
     path: '/gtfo'
+  },
+  {
+    name: 'main',
+    children: [
+      { name: 'courses' },
+      { name: 'signin', path: '/auth/signin?language' },
+      { name: 'signup', path: '/auth/signup?language' },
+    ]
   }
 ]
 
 test("correct recursive path list", () => {
   expect(recursivelyFindDeepestPath(routesList, [])).toEqual([
+    {
+      path: '/auth/signin?language',
+      routes: ['main', 'signin'],
+    },
+    {
+      path: '/auth/signup?language',
+      routes: ['main', 'signup'],
+    },
     {
       path: '/challenge',
       routes: ['dashboard', 'competition', 'regional'],
