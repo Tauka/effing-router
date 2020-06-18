@@ -1,7 +1,7 @@
 import { Store, Event } from 'effector';
 import React from 'react';
 
-export type Routes = string[];
+export type Routes = (string | symbol)[];
 export type Params = Record<string, string | number | boolean | null>;
 export type ObjectQuery = {
 	routes: Routes;
@@ -49,7 +49,7 @@ export interface RouteObject {
   redirect?: Redirect;
 }
 
-export type RoutesConfiguration = Record<string, RouteObject>;
+export type RoutesConfiguration = Record<string | symbol, RouteObject>;
 export type RoutesList = Array<Route>;
 export type PathList = {
   path: string;

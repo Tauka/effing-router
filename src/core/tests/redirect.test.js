@@ -2,6 +2,7 @@ import { restore, createEvent, createStore, clearNode } from 'effector';
 
 import { go, replace } from '../events';
 import { initializeRouter } from '../initializeRouter';
+import { ROUTE_NOT_FOUND } from '../constants';
 
 let evNotAuth;
 let makeAdmin;
@@ -173,16 +174,11 @@ test("redirect on go", () =>
   })
 })
 
-test("nested redirect", () =>
+test("nonexitent route - 404", () =>
 {
-  go(['profile', 'scores']);
+  go(['auth', 'karamba']);
   expect($router.getState()).toEqual({
-    routes: ["profile", "scores"],
-    params: {}
-  })
-  evNotAuth(true);
-  expect($router.getState()).toEqual({
-    routes: ["auth", "signin"],
+    routes: [ROUTE_NOT_FOUND],
     params: {}
   })
 })

@@ -32,9 +32,9 @@ const findTruthyRedirectKey = (redirectStores: Record<string, boolean>, routes: 
   let redirectStoreKey = ''
   for(let i = 0; i < routes.length; i++) {
     if(i === 0)
-      redirectStoreKey += routes[i];
+      redirectStoreKey += (routes[i].toString());
     else
-      redirectStoreKey += '.' + routes[i];
+      redirectStoreKey += '.' + (routes[i].toString());
 
     if(redirectStores[redirectStoreKey])
       return redirectStoreKey;

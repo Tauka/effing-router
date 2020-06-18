@@ -9,7 +9,7 @@ export const initializeRouter = (router: RouterConfiguration, routesList: Routes
 
 	const routesCfg = routeListToObject(routesList);
 	const redirectsMap = routesListToRedirectsMap(routesList);
-	connectRouteApi($);
+	connectRouteApi($, routesCfg);
 	connectGoRedirects($, redirectsMap);
 	setupRedirects($, redirectsMap);
 	router._cfg = routesCfg;
