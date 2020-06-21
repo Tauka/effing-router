@@ -14,7 +14,7 @@
     "build:src": "rollup -c",
     "lint": "eslint '*/**/*.{ts,tsx}'",
     "build:types": "rollup -c rollup.typescript.config.js",
-    "build": "rm -rf dist && npm run build:types && npm run build:src",
+    "build": "rm -rf dist && rm -rf react && rm -rf dom && npm run build:types && npm run build:src",
     "build:publish": "npm run build && npm publish"
   },
   "keywords": [
@@ -32,7 +32,9 @@
     "url": "https://github.com/Tauka/effing-router/issues"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "dom/",
+    "react/"
   ],
   "homepage": "https://github.com/Tauka/effing-router#readme",
   "devDependencies": {

@@ -7,7 +7,7 @@ export default [
     {
         input: "src/core/index.ts",
         output: {
-            file: "dist/index.js",
+            file: "./dist/index.js",
             format: "esm"
         },
         external: ['effector', 'react'],
@@ -28,7 +28,7 @@ export default [
     {
         input: "src/dom/index.ts",
         output: {
-            file: "dist/dom/index.js",
+            file: "./dom/index.js",
             format: "esm"
         },
         external: ['effector'],
@@ -49,7 +49,7 @@ export default [
     {
         input: "src/view/index.ts",
         output: {
-            file: "dist/react/index.js",
+            file: "./react/index.js",
             format: "esm"
         },
         external: ['effector', 'effector-react', 'react'],
