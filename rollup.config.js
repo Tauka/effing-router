@@ -49,7 +49,7 @@ export default [
     {
         input: "src/view/index.ts",
         output: {
-            file: "./react/index.js",
+            file: "./react-bundle/index.js",
             format: "esm"
         },
         external: ['effector', 'effector-react', 'react'],
@@ -65,6 +65,24 @@ export default [
                 extensions: ['.ts', '.tsx']
             }),
             terser()
+        ],
+    },
+    {
+        input: "src/common/routeListToObject.ts",
+        output: {
+            file: "./common/routeListToObject.js",
+            format: "esm"
+        },
+        plugins:
+        [
+            resolve({
+                extensions: ['.tsx', '.ts', '.js']
+            }),
+            babel({
+                babelHelpers: 'runtime',
+                exclude: 'node_modules/**',
+                extensions: ['.ts', '.tsx']
+            })
         ],
     }
 ]

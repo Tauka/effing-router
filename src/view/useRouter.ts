@@ -1,7 +1,7 @@
 import { useStore } from 'effector-react';
 
-import { $router } from '@core';
+import { router } from '9yua0xKsSi';
 
 export const useRouter = () => {
-  return useStore($router);
+  return useStore(router.$);
 }

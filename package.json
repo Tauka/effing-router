@@ -15,7 +15,7 @@
     "build:src": "rollup -c",
     "lint": "eslint '*/**/*.{ts,tsx}'",
     "build:types": "rollup -c rollup.typescript.config.js",
-    "build": "rm -rf dist && rm -rf react && rm -rf dom && npm run build:types && npm run build:src",
+    "build": "rm -rf dist && rm -rf react-bundle && rm -rf react && rm -rf dom && npm run build:types && npm run build:src && node postBuild.js",
     "build:publish": "npm run build && npm publish"
   },
   "keywords": [
@@ -73,7 +73,8 @@
     "rollup-plugin-typescript2": "^0.27.1",
     "ttypescript": "^1.5.10",
     "typescript": "^3.8.3",
-    "typescript-transform-paths": "^1.1.14"
+    "typescript-transform-paths": "^1.1.14",
+    "glob": "^7.1.6"
   },
   "peerDependencies": {
     "effector": "^20.14.0",

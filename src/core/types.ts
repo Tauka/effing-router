@@ -17,13 +17,11 @@ export type Query = FunctionQuery | ObjectQuery | StringQuery;
 export type Router = Store<ObjectQuery>;
 export type RouterPath = Store<Routes>;
 export type RouterParams = Store<Params>;
-export interface RouterConfiguration {
+export interface RouterBase {
 	$: Router;
-  _cfg: RoutesConfiguration;
   $routes: RouterPath;
   $params: RouterParams;
   go: Event<Query>;
-  set: Event<Query>;
   replace: Event<Query>;
   back: Event<void>;
 }

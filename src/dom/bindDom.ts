@@ -1,26 +1,23 @@
 import { Event } from 'effector';
 import { buildPath } from './buildPath';
-import { ObjectQuery, Query, RouterConfiguration, RegexpList, FunctionQuery } from 'src/core/types';
+import { ObjectQuery, Query, RouterBase, RegexpList, FunctionQuery, RoutesList } from 'src/core/types';
 import { routesListToPathList } from './routesListToPathList';
-import { routesObjectToRoutesList } from './routesObjectToRoutesList';
 import { pathListToRegexpList } from './pathListToRegexpList';
 import { parsePath } from './parsePath';
+import { routeListToObject } from 'XtR6HOaxz1';
 
-export const bindDom = (router: RouterConfiguration, basename: string) =>
+export const bindDom = (router: RouterBase, routesList: RoutesList, basename: string) =>
 {
-	const { $, go, replace, back, _cfg } = router;
+	const { $, go, replace, back } = router;
+	const routesObject = routeListToObject(routesList)
 
-	if(!_cfg)
-		throw new Error(`Cannot "bindDom" before "initializeRouter"`);
-
-	const routesList = routesObjectToRoutesList(_cfg);
 	const pathList = routesListToPathList(routesList);
 	const regexpList = pathListToRegexpList(pathList);
 
 	const pathnameSet = pathnameFactory(regexpList, replace as Event<FunctionQuery>);
 
 	$.watch(go, (route: ObjectQuery, go: Query) => {
-		const stringPath = buildPath(route, _cfg);
+		const stringPath = buildPath(route, routesObject);
 
 		if(typeof go === 'object' && go.replace)
 			return browserHistoryReplace(route, stringPath, basename);
@@ -29,7 +26,7 @@ export const bindDom = (router: RouterConfiguration, basename: string) =>
 	});
 
 	$.watch(replace, route => {
-		const stringPath = buildPath(route, _cfg);
+		const stringPath = buildPath(route, routesObject);
 		browserHistoryReplace(route, stringPath, basename);
 	});
 

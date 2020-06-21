@@ -18,11 +18,11 @@
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
-      "@lib": ["src/lib.ts"],
-      "@core": ["src/core/index.ts"],
-      "@core/*": ["src/core/*"],
+      "@lib": ["../src/lib.ts"],
+      "@core": ["../src/core/index.ts"],
+      "@core/*": ["../src/core/*"],
     }
   },
-  "include": ["src/core", "src/lib.ts"],
-  "exclude" : ["src/**/*.test.ts", "src/**/*.test.js"]
+  "include": ["../src/view", "..src/lib.ts"],
+  "exclude" : ["../src/**/*.test.ts", "../src/**/*.test.js"]
 }

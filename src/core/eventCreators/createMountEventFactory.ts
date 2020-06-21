@@ -1,7 +1,7 @@
 import { guard, sample } from 'effector';
 
 import { ObjectQuery, Router, Routes, RoutesQuery } from '@core/types';
-import { duplexStore, isRoutesQuery, isPartialObjectQuery } from '@lib';
+import { duplexStore, isRoutesQuery } from '@lib';
 import { paramsMatch, fullRoutesMatch } from './lib';
 
 type MountConfiguration = ObjectQuery | string | RoutesQuery;
@@ -14,8 +14,7 @@ export const createMountEventFactory = ($router: Router) => (mountCfg: MountConf
     if(isRoutesQuery(mountCfg))
         return handleArray($router, mountCfg);
 
-    if(isPartialObjectQuery(mountCfg))
-        return handleObject($router, mountCfg);
+    return handleObject($router, mountCfg);
 }
 
 const handleArray = ($router: Router, mountCfg: RoutesQuery) => {

@@ -12,8 +12,7 @@ export const createUnmountEventFactory = ($router: Router) => (unmountCfg: Objec
     if(isRoutesQuery(unmountCfg))
         return handleArray($router, unmountCfg);
 
-    if(isPartialObjectQuery(unmountCfg))
-        return handleObject($router, unmountCfg);
+    return handleObject($router, unmountCfg);
 }
 
 const handleArray = ($router: Router, mountCfg: RoutesQuery) => {

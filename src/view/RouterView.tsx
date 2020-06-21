@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useStore } from 'effector-react';
 
-import { RoutesConfiguration, RouterConfiguration, RouteObject } from '@core/types';
+import { routeListToObject } from 'XtR6HOaxz1';
+import { RoutesConfiguration, RouterBase, RouteObject, RoutesList } from '@core/types';
 
 type ExtraProps = {[a: string]: any};
 interface BuildComponentProps {
-	routesCfg: RoutesConfiguration;
+	routesObject: RoutesConfiguration;
 	currentTokenIdx: number;
 	extraProps?: ExtraProps;
 	routes: (string | symbol)[];
 }
 
 interface RouterViewProps {
-	router: RouterConfiguration;
+	router: RouterBase;
+	routesList: RoutesList;
 }
 
-const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentTokenIdx, extraProps, routes }) =>
+const BuildComponent: React.FC<BuildComponentProps> = ({ routesObject: routesCfg, currentTokenIdx, extraProps, routes }) =>
 {
 	const token = routes[currentTokenIdx];
 
@@ -29,7 +31,7 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentToken
 
 		return <BuildComponent
 			extraProps={props}
-			routesCfg={routesCfg[token as any].children as Record<string, RouteObject>}
+			routesObject={routesCfg[token as any].children as Record<string, RouteObject>}
 			currentTokenIdx={currentTokenIdx + 1}
 			routes={routes}
 		/>;
@@ -46,12 +48,13 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesCfg, currentToken
 	return <Component {...extraProps} childRoute={childRoute}/>
 };
 
-export const RouterView: React.FC<RouterViewProps> = ({ router }) =>
+export const RouterView: React.FC<RouterViewProps> = ({ router, routesList }) =>
 {
 	const routes = useStore(router.$routes);
+	const routesObject = useMemo(() => routeListToObject(routesList), [])
 
 	return <BuildComponent
-		routesCfg={router._cfg}
+		routesObject={routesObject}
 		currentTokenIdx={0}
 		routes={routes}
 	/>;
