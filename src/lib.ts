@@ -67,14 +67,14 @@ export const isParamsQuery = (arg: any): arg is ParamsQuery => {
 export const routeObjectPath: any = (obj: Record<string, any>, pathArr: string[]) => {
 	const path = pathArr[0];
 
-	if(pathArr.length === 1)
-		return obj[path]
-
 	if(typeof obj[path] !== 'object' || obj[path] === null)
 		throw new Error(`Invalid path, expected route at ${path}`);
 
 	if(!obj[path].children)
 		throw new Error(`Invalid path, expected childen at ${path}`);
+
+	if(pathArr.length === 1)
+		return obj[path]
 
 	return routeObjectPath(obj[path].children, pathArr.slice(1));
 }
