@@ -1,4 +1,10 @@
-export * from './events';
-export { router, $router } from './router';
+import { go, replace, back } from './events';
+import { router as baseRouter } from './router';
 export { initializeRouter } from './initializeRouter';
-export * from './eventCreators';
+import * as utils from './eventCreators';
+
+export const router = {
+  ...baseRouter,
+  ...utils,
+  go, replace, back
+}

@@ -10,6 +10,9 @@ export const bindDom = (router: RouterConfiguration, basename: string) =>
 {
 	const { $, go, replace, back, _cfg } = router;
 
+	if(!_cfg)
+		throw new Error(`Cannot "bindDom" before "initializeRouter"`);
+
 	const routesList = routesObjectToRoutesList(_cfg);
 	const pathList = routesListToPathList(routesList);
 	const regexpList = pathListToRegexpList(pathList);
