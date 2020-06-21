@@ -95,3 +95,9 @@ export const isSubset = <T>(superset: T[], subset: T[]) => {
 
 	return true;
 }
+
+export const uninit = (functionName: string, moduleName: string) => {
+	return () => {
+		throw new Error(`Cannot access "${functionName}" before initialization of "${moduleName}"`);
+	}
+}
