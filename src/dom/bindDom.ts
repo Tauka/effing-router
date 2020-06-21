@@ -8,6 +8,12 @@ import { routeListToObject } from '@common';
 
 export const bindDom = (router: RouterBase, routesList: RoutesList, basename: string) =>
 {
+	if(!router)
+		throw new Error(`You must provide "router" from "effing-router"`)
+
+	if(!routesList)
+		throw new Error(`You must provide "routesList"`)
+
 	const { $, go, replace, back } = router;
 	const routesObject = routeListToObject(routesList)
 

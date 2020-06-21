@@ -50,6 +50,12 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesObject: routesCfg
 
 export const RouterView: React.FC<RouterViewProps> = ({ router, routesList }) =>
 {
+	if(!router)
+		throw new Error(`You must provide "router" from "effing-router" as prop`)
+
+	if(!routesList)
+		throw new Error(`You must provide "routesList" as prop`)
+
 	const routes = useStore(router.$routes);
 	const routesObject = useMemo(() => routeListToObject(routesList), [])
 
