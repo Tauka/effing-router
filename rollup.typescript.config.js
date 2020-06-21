@@ -86,9 +86,9 @@ export default [
         ],
     },
     {
-        input: "src/common/routeListToObject.ts",
+        input: "src/common/index.ts",
         output: {
-            file: "common/routeListToObject.js",
+            file: "common/index.js",
             format: "esm"
         },
         external: ['effector', 'effector-react', 'react', '@babel/runtime-corejs3'],

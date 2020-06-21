@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react';
 
-import { router } from '9yua0xKsSi';
+import { router } from '@dist';
 
 export const useRouter = () => {
   return useStore(router.$);

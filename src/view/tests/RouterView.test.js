@@ -4,7 +4,6 @@ import { createStore } from 'effector';
 import { render } from '@testing-library/react'
 
 import { RouterView } from '../RouterView';
-import { routeListToObject } from '../../core/routeListToObject';
 
 const makeReactComponent = id =>
 {
@@ -36,29 +35,22 @@ const routesList = [
   }
 ];
 
-const routesCfg = routeListToObject(routesList);
 
 test("basic view", () =>
 {
   const $routes = createStore(['main', 'dashboard']);
-  const router = {
-    _cfg: routesCfg,
-    $routes
-  }
+  const router = { $routes }
 
-  const { container } = render(<RouterView router={router}/>)
+  const { container } = render(<RouterView router={router} routesList={routesList}/>)
   expect(container).toHaveDOMNesting(['main', 'dashboard']);
 })
 
 test("passing props to children", () =>
 {
   const $routes = createStore(['main', 'dashboard']);
-  const router = {
-    _cfg: routesCfg,
-    $routes
-  }
+  const router = { $routes }
 
-  const { container } = render(<RouterView router={router}/>)
+  const { container } = render(<RouterView router={router} routesList={routesList}/>)
   const dashboard = container.querySelector("#dashboard");
   expect(dashboard).toHaveTextContent('parent: main');
 })

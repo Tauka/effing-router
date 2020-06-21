@@ -21,8 +21,9 @@
       "@lib": ["src/lib.ts"],
       "@core": ["src/core/index.ts"],
       "@core/*": ["src/core/*"],
+      "@common/*": ["src/common/index.ts"]
     }
   },
-  "include": ["src/core", "src/lib.ts"],
+  "include": ["src", "src/lib.ts"],
   "exclude" : ["src/**/*.test.ts", "src/**/*.test.js"]
 }

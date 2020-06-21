@@ -4,7 +4,7 @@ import { ObjectQuery, Query, RouterBase, RegexpList, FunctionQuery, RoutesList }
 import { routesListToPathList } from './routesListToPathList';
 import { pathListToRegexpList } from './pathListToRegexpList';
 import { parsePath } from './parsePath';
-import { routeListToObject } from 'XtR6HOaxz1';
+import { routeListToObject } from '@common';
 
 export const bindDom = (router: RouterBase, routesList: RoutesList, basename: string) =>
 {

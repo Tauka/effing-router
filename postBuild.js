@@ -1,12 +1,12 @@
 const fs = require('fs-extra');
 const glob = require("glob")
 
-const effingRouterKey = '9yua0xKsSi';
-const routeListToObjectKey = 'XtR6HOaxz1';
+const effingRouterKey = '@dist';
+const commonKey = '@common';
 
 const REPLACE_MAP = {
   [effingRouterKey]: '../dist',
-  [routeListToObjectKey]: '../common/routeListToObject.js'
+  [commonKey]: '../common'
 }
 
 const REACT_BUNDLE_PATH = './react-bundle/index.js';
@@ -20,9 +20,9 @@ const domBundle = fs.readFileSync(DOM_BUNDLE_PATH, 'utf-8');
 
 fs.writeFileSync(REACT_BUNDLE_PATH, reactBundle
   .replace(effingRouterKey, REPLACE_MAP[effingRouterKey])
-  .replace(routeListToObjectKey, REPLACE_MAP[routeListToObjectKey]));
-fs.writeFileSync(CORE_BUNDLE_PATH, coreBundle.replace(routeListToObjectKey, REPLACE_MAP[routeListToObjectKey]));
-fs.writeFileSync(DOM_BUNDLE_PATH, domBundle.replace(routeListToObjectKey, REPLACE_MAP[routeListToObjectKey]));
+  .replace(commonKey, REPLACE_MAP[commonKey]));
+fs.writeFileSync(CORE_BUNDLE_PATH, coreBundle.replace(commonKey, REPLACE_MAP[commonKey]));
+fs.writeFileSync(DOM_BUNDLE_PATH, domBundle.replace(commonKey, REPLACE_MAP[commonKey]));
 fs.renameSync('./react-bundle', './react');
 
 const coreDts = glob.sync("dist/**/*.d.ts")

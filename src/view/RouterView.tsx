@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useStore } from 'effector-react';
 
-import { routeListToObject } from 'XtR6HOaxz1';
+import { routeListToObject } from '@common';
 import { RoutesConfiguration, RouterBase, RouteObject, RoutesList } from '@core/types';
 
 type ExtraProps = {[a: string]: any};

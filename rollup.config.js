@@ -10,7 +10,7 @@ export default [
             file: "./dist/index.js",
             format: "esm"
         },
-        external: ['effector', 'react'],
+        external: ['effector', 'react', '@common'],
         plugins:
         [
             resolve({
@@ -21,8 +21,7 @@ export default [
                 babelHelpers: 'runtime',
                 exclude: 'node_modules/**',
                 extensions: ['.ts', '.tsx']
-            }),
-            terser()
+            })
         ],
     },
     {
@@ -31,7 +30,7 @@ export default [
             file: "./dom/index.js",
             format: "esm"
         },
-        external: ['effector'],
+        external: ['effector', '@common'],
         plugins:
         [
             resolve({
@@ -42,8 +41,7 @@ export default [
                 babelHelpers: 'runtime',
                 exclude: 'node_modules/**',
                 extensions: ['.ts', '.tsx']
-            }),
-            terser()
+            })
         ],
     },
     {
@@ -52,7 +50,7 @@ export default [
             file: "./react-bundle/index.js",
             format: "esm"
         },
-        external: ['effector', 'effector-react', 'react'],
+        external: ['effector', 'effector-react', 'react', '@common', '@dist'],
         plugins:
         [
             resolve({
@@ -63,14 +61,13 @@ export default [
                 babelHelpers: 'runtime',
                 exclude: 'node_modules/**',
                 extensions: ['.ts', '.tsx']
-            }),
-            terser()
+            })
         ],
     },
     {
-        input: "src/common/routeListToObject.ts",
+        input: "src/common/index.ts",
         output: {
-            file: "./common/routeListToObject.js",
+            file: "./common/index.js",
             format: "esm"
         },
         plugins:

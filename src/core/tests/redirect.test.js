@@ -1,15 +1,15 @@
-import { restore, createEvent, createStore, clearNode } from 'effector';
+import { restore, createEvent, clearNode } from 'effector';
 
 import { go, replace } from '../events';
 import { initializeRouter } from '../initializeRouter';
 import { ROUTE_NOT_FOUND } from '../constants';
+import { $router } from '../router';
 
 let evNotAuth;
 let makeAdmin;
 let $isNotAuth;
 let $isAdmin;
 let routesList;
-let $router = null;
 beforeEach(() =>
 {
   evNotAuth = createEvent();
@@ -69,7 +69,7 @@ beforeEach(() =>
     }
   ]
 
-  $router = createStore({ routes: [], params: {} });
+  $router.setState($router.defaultState);
   wireRouter($router, routesList);
 })
 
@@ -83,7 +83,7 @@ afterEach(() => {
 
 const wireRouter = ($router, routesList) =>
 {
-  initializeRouter({ $: $router }, routesList);
+  initializeRouter(routesList);
 }
 
 test("router is triggered upon condition store change", () =>
@@ -123,7 +123,7 @@ test("router is triggered upon condition store change (object query)", () =>
 test("initial redirect", () =>
 {
   evNotAuth(true);
-  $router = createStore({ routes: [], params: {} });
+  $router.setState($router.defaultState);
   wireRouter($router, routesList);
   replace(() => ({
     routes: ["dashboard"],

@@ -1,7 +1,7 @@
 import { connectRouteApi } from './connectRouteApi';
 import { RoutesList } from './types';
 import { setupRedirects, connectGoRedirects, routesListToRedirectsMap } from './redirect';
-import { routeListToObject } from 'XtR6HOaxz1';
+import { routeListToObject } from '@common';
 import { $router } from './router';
 
 export const initializeRouter = (routesList: RoutesList) =>

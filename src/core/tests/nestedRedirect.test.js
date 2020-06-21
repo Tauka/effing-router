@@ -2,11 +2,11 @@ import { restore, createEvent, createStore, clearNode } from 'effector';
 
 import { go, replace } from '../events';
 import { initializeRouter } from '../initializeRouter';
+import { $router } from '../router';
 
 let evNotAuth;
 let $isNotAuth;
 let routesList;
-let $router = null;
 beforeEach(() =>
 {
   evNotAuth = createEvent();
@@ -39,13 +39,13 @@ beforeEach(() =>
     }
   ]
 
-  $router = createStore({ routes: [], params: {} });
-  wireRouter($router, routesList);
+  wireRouter(routesList);
+  $router.setState($router.defaultState);
 })
 
-const wireRouter = ($router, routesList) =>
+const wireRouter = (routesList) =>
 {
-  initializeRouter({ $: $router }, routesList);
+  initializeRouter(routesList);
 }
 
 test("nested redirect", () =>
