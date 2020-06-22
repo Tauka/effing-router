@@ -90,14 +90,16 @@ export const App = () => {
 import { forward, createEffect, restore } from 'effector';
 import { router } from 'effing-router';
 
-const fxFetchProfileData = createEffect().use(profileApi);
-const $data = restore(fxFetchProfileData, []);
+const fxGetStats = createEffect().use(statsApi);
+const $stats = restore(fxGetStats, null);
 
 forward({
-  from: router.createMountEvent(['main', 'profile']),
-  to: fxFetchProfileData
-})
+  from: router.createMountEvent("dashboard"),
+  to: fxGetStats
+});
 ```
+
+Demo: https://codesandbox.io/s/clever-firefly-89zp4?file=/src/features/Dashboard.tsx
 
 ### Cleaning up on route unmount
 ```javascript
@@ -110,6 +112,8 @@ const evProfileUnmount = router.createUnmountEvent(['main', 'profile']),
 $data.reset(evProfileUnmount);
 ```
 
+Demo: https://codesandbox.io/s/great-cache-jfnq9?file=/src/features/Dashboard.tsx
+
 ### Working with params
 ```javascript
 import { router } from 'effing-router';
@@ -120,6 +124,8 @@ $userId.watch(id => console.log('new user id: ', id))
 router.go({ userId: 5 }); // 'new user id: 5'
 router.go({ userId: 6 }); // 'new user id: 6'
 ```
+
+Demo: https://codesandbox.io/s/determined-jennings-t6fjq?file=/src/features/Dashboard.tsx
 
 ### Syncing store with url
 ```javascript
@@ -145,9 +151,11 @@ forward({
 })
 ```
 
+Demo: https://codesandbox.io/s/hungry-pare-lrsvx?file=/src/features/Dashboard.tsx
+
 ## Core API
 
-### router
+### `router`
 Main instance of router, it is a collection of events and functions that perform routing. Router state consists of two main part: **routes** and **params**
 ```javascript
 {
@@ -160,7 +168,7 @@ Main instance of router, it is a collection of events and functions that perform
 
 **Params** specifty *how you want to render*, it can contain any data related to route state. You can persist any application data in params.
 
-### initializeRouter(router, routesList)
+### `initializeRouter(router, routesList)`
 
 Accepts router object and list of routes configuration
 
@@ -178,12 +186,23 @@ Accepts router object and list of routes configuration
     {
       name: 'users',
       component: Users,
+      redirect: {
+        condition: $noUsers,
+        to: 'news'
+      }
     }
   ]
 }
 ```
 
 Only required prop is `name`. However, if you use `RouterView` from `effing-router/react`, you will have to specify `component`
+
+#### Redirects
+Redirect configuration can be specified for each route, it consists of two required properties: `condition` and `to`. 
+
+`condition` is a boolean store, and if has value true, redirects to `to`. It is reactive, which means redirect can be triggered both on `router.go` and when condition store becomes true
+
+`to` can be any form of argument of `router.go`, basically `router.go` gets called with `to`
 
 #### Compiling path
 
@@ -221,7 +240,7 @@ If not specified, path will be compiled from route names **concatenated** with *
 */
 ```
 
-### router.go
+### `router.go`
 Used to navigate to new route
 ```javascript
 import { router } from 'effing-router';
@@ -248,10 +267,10 @@ router.go({ userId: 5 });
 
 You can find more overloads in docs.
 
-### router.replace
+### `router.replace`
 It has same signatures as `go`, but instead of pushing new entry into history stack, it replaces last
 
-### router.createMountEvent
+### `router.createMountEvent`
 Creates event that is triggered when particular route (optionally with particular params) is visited.
 
 Can be useful to perform on mount logic
@@ -264,10 +283,10 @@ router.createMountEvent({
 }) // triggered only when visited with particular params
 ```
 
-### router.createUnmountEvent
+### `router.createUnmountEvent`
 It has same signatures as `createMountEvent`, but gets triggered when you leave particular route (optionally with particular params)
 
-### router.createParamsStore
+### `router.createParamsStore`
 Create store that holds value of particular param, gets updated when that param is changed
 
 ```javascript
@@ -280,7 +299,7 @@ See [Working with params](#working-with-params)
 
 DOM API is separated from core to its own module at `effing-router/dom`
 
-### bindDom(router, basename = '')
+### `bindDom(router, basename = '')`
 Accepts router instance. It will synchronize router state with **browser url**. It will have no effect in non-browser environments.
 
 ## React API
@@ -303,7 +322,7 @@ const Main = ({ childRoute }) => {
 }
 ```
 
-### useRouter()
+### `useRouter()`
 
 Hook for accessing current router state. Also can be useful for conditional rendering
 ```javascript
