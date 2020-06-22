@@ -29,7 +29,7 @@ export const parsePath = (path: string, regexpList: RegexpList) => {
     }
 
   return pathItem.matcher.keys.reduce((matchedQuery, key, index) => {
-    matchedQuery.params[String(key.name)] = (execResult as RegExpExecArray)[index + 1];
+    matchedQuery.params[key.name as any] = (execResult as RegExpExecArray)[index + 1];
     return matchedQuery
   }, {
     routes: pathItem.routes,

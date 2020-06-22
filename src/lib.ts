@@ -67,16 +67,16 @@ export const isParamsQuery = (arg: any): arg is ParamsQuery => {
 export const routeObjectPath: any = (obj: RoutesConfiguration, routesArr: (string | symbol)[]) => {
 const path = routesArr[0];
 
-if(typeof obj[String(path)] !== 'object' || obj[String(path)] === null)
+if(typeof obj[path as any] !== 'object' || obj[path as any] === null)
 		throw new Error(`Invalid path, expected route at ${String(path)}`);
 
-	if(!obj[String(path)].children)
+	if(!obj[path as any].children)
 		throw new Error(`Invalid path, expected childen at ${String(path)}`);
 
 	if(routesArr.length === 1)
-		return obj[String(path)]
+		return obj[path as any]
 
-	return routeObjectPath(obj[String(path)].children, routesArr.slice(1));
+	return routeObjectPath(obj[path as any].children, routesArr.slice(1));
 }
 
 export const every = (...booleanStores: Store<boolean>[]) => {

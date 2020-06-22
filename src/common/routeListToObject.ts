@@ -16,7 +16,7 @@ export const routeListToObject: (routesList: RoutesList) => RoutesConfiguration 
 
 const arrayToObject = (arr: ({name: any} & Record<string, any>)[]) => {
   return arr.reduce((obj: Record<string, any>, route) => {
-    obj[String(route.name)] = route;
+    obj[route.name] = route;
     return obj;
   }, {})
 }

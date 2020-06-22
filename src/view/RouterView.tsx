@@ -38,9 +38,9 @@ const BuildComponent: React.FC<BuildComponentProps> = ({ routesObject: routesCfg
 	}
 
 	if(!routesCfg[token as any])
-		throw new Error(`Cannot find route ${String(token)} in path [${routes}]`);
+		throw new Error(`Cannot find route ${String(token)} in path [${routes.map(String)}]`);
 
-	const Component = routesCfg[String(token)].component;
+	const Component = routesCfg[token].component;
 
 	if(!Component)
 		throw new Error(`Cannot find component in "${String(token)}"`);
