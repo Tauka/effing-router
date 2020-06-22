@@ -53,7 +53,7 @@ const browserHistoryBack = () =>
 const browserHistoryPush = (route: ObjectQuery, stringPath: string, basename = '') =>
 {
 	window.history.pushState(
-		route,
+		{},
 		'',
 		`${basename}${stringPath}`);
 };
@@ -61,7 +61,7 @@ const browserHistoryPush = (route: ObjectQuery, stringPath: string, basename = '
 const browserHistoryReplace = (route: ObjectQuery, stringPath: string, basename = '') =>
 {
 	window.history.replaceState(
-		route,
+		{},
 		'',
 		`${basename}${stringPath}`);
 };
