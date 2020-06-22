@@ -5,7 +5,7 @@ Effing-router is a config-based router with support of [effector](https://github
 * Excellent integration with **effector**
 * Full **Typescript** support
 * **ES modules** and **tree-shaking** support
-* Modularity and deep **customizations**
+* Modularity and **customizations**
 
 ## How it works (or why another routing library)
 `effing-router` utilizes different routing model than react-router.
@@ -17,6 +17,7 @@ Instead of **parsing** url and rendering routes that match path, `effing-router`
 ```javascript
 import { router, initializeRouter } from 'effing-router';
 import { bindDom } from 'effing-router/dom';
+import { RouterView } from 'effing-router/react';
 
 const Main = ({ childRoute }) => {
   return <div>
@@ -68,18 +69,14 @@ const routes = [
   }
 ]
 
-initializeRouter(router, routes)
-bindDom(router)
-```
+initializeRouter(routes)
+bindDom(router, routes)
 
-### Rendering routes
-```javascript
-import { routerConfig } from 'effing-router';
-import { RouterView } from 'effing-router/react';
-
+// rendering routes
 export const App = () => {
   return <RouterView
-    routerConfig={routerConfig}
+    router={router}
+    routesList={routesList}
   />
 }
 ```
@@ -103,13 +100,14 @@ Demo: https://codesandbox.io/s/clever-firefly-89zp4?file=/src/features/Dashboard
 
 ### Cleaning up on route unmount
 ```javascript
-import { createStore } from 'effector';
+import { createEvent, restore } from 'effector';
 import { router } from 'effing-router';
 
-const $data = createStore([]);
+const setData = createEvent<string[]>();
+const $data = restore(setData, []);
 
-const evProfileUnmount = router.createUnmountEvent(['main', 'profile']),
-$data.reset(evProfileUnmount);
+const evDashboardUnmount = router.createUnmountEvent("dashboard");
+$data.reset(evDashboardUnmount);
 ```
 
 Demo: https://codesandbox.io/s/great-cache-jfnq9?file=/src/features/Dashboard.tsx
@@ -129,25 +127,17 @@ Demo: https://codesandbox.io/s/determined-jennings-t6fjq?file=/src/features/Dash
 
 ### Syncing store with url
 ```javascript
-import { createStore, createEvent } from 'effector';
+import { restore, createEvent } from 'effector';
 import { router } from 'effing-router';
 
-const $coordinates = createStore({ x: 0, y: 0 });
-const evHydrateCoordinates = createEvent();
-
-$coordinates.on(evHydrateCoordinates, (_, coordinatesString) => {
-  return JSON.parse(coordinatesString);
-})
+const setPosition = createEvent();
+const positionString = new URLSearchParams(location.search).get('position');
+const $position = restore(setPosition, positionString ? JSON.parse(positionString) : { x: 0, y: 0 });
 
 // router.go, router.replace are usual effector events
 forward({
-  from: $coordinates,
-  to: router.replace.prepend(data => { coordinates: JSON.stringify(data))
-})
-
-forward({
-  from: router.createParamsStore('coordinates'),
-  to: evHydrateCoordinates
+  from: $position,
+  to: router.replace.prepend((position) => ({ position: JSON.stringify(position) }))
 })
 ```
 
@@ -200,7 +190,7 @@ Only required prop is `name`. However, if you use `RouterView` from `effing-rout
 #### Redirects
 Redirect configuration can be specified for each route, it consists of two required properties: `condition` and `to`. 
 
-`condition` is a boolean store, and if has value true, redirects to `to`. It is reactive, which means redirect can be triggered both on `router.go` and when condition store becomes true
+`condition` is a boolean store, and if has value `true`, redirects to `to`. It is reactive, which means redirect can be triggered both on `router.go` and when condition store becomes `true`
 
 `to` can be any form of argument of `router.go`, basically `router.go` gets called with `to`
 
@@ -299,14 +289,14 @@ See [Working with params](#working-with-params)
 
 DOM API is separated from core to its own module at `effing-router/dom`
 
-### `bindDom(router, basename = '')`
+### `bindDom(router, routesList, basename = '')`
 Accepts router instance. It will synchronize router state with **browser url**. It will have no effect in non-browser environments.
 
 ## React API
 
 API for rendering routes as React components, it's located at `effing-router/react`
 
-### `<RouterView routerConfig/>`
+### `<RouterView router routesList/>`
 Renders route tree
 
 #### childRoute()
@@ -337,3 +327,7 @@ const Users = ({ childRoute }) => {
   </div>
 }
 ```
+
+## License
+
+[MIT](LICENSE)

@@ -1,7 +1,7 @@
 {
   "name": "effing-router",
   "version": "0.4.12",
-  "description": "Feature-centric router for effector applications",
+  "description": "Config-based router with support of effector as first-class citizen",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "jsnext:main": "dist/index.js",
