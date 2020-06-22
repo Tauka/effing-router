@@ -21,8 +21,12 @@ const domBundle = fs.readFileSync(DOM_BUNDLE_PATH, 'utf-8');
 fs.writeFileSync(REACT_BUNDLE_PATH, reactBundle
   .replace(effingRouterKey, REPLACE_MAP[effingRouterKey])
   .replace(commonKey, REPLACE_MAP[commonKey]));
-fs.writeFileSync(CORE_BUNDLE_PATH, coreBundle.replace(commonKey, REPLACE_MAP[commonKey]));
-fs.writeFileSync(DOM_BUNDLE_PATH, domBundle.replace(commonKey, REPLACE_MAP[commonKey]));
+fs.writeFileSync(CORE_BUNDLE_PATH, coreBundle
+  .replace(effingRouterKey, REPLACE_MAP[effingRouterKey])
+  .replace(commonKey, REPLACE_MAP[commonKey]));
+fs.writeFileSync(DOM_BUNDLE_PATH, domBundle
+  .replace(effingRouterKey, REPLACE_MAP[effingRouterKey])
+  .replace(commonKey, REPLACE_MAP[commonKey]));
 fs.renameSync('./react-bundle', './react');
 
 const coreDts = glob.sync("dist/**/*.d.ts")
