@@ -6,7 +6,6 @@ export type Params = Record<string, string | number | boolean | null>;
 export type ObjectQuery = {
 	routes: Routes;
   params: Params;
-  replace?: boolean;
 }
 export type FunctionQuery = (a: ObjectQuery) => Partial<ObjectQuery> | RoutesQuery | ParamsQuery;
 export type StringQuery = string;
