@@ -16,12 +16,12 @@ export const recursivelyFindDeepestPath = (routesList: RoutesList, routes: strin
   return routesListSortedByChildrenPresence.reduce<PathList>((pathList, routeConfig) => {
     const result: PathList = [...pathList];
     if(routeConfig.children)
-      result.push(...recursivelyFindDeepestPath(routeConfig.children, [...routes, routeConfig.name]))
+      result.push(...recursivelyFindDeepestPath(routeConfig.children, [...routes, String(routeConfig.name)]))
 
     if(routeConfig.path)
       result.push({
         path: routeConfig.path,
-        routes: [...routes, routeConfig.name],
+        routes: [...routes, String(routeConfig.name)],
       })
 
     return result;

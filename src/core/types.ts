@@ -32,7 +32,7 @@ export interface Redirect {
   to: Query;
 }
 export interface Route {
-  name: string;
+  name: string | symbol;
   component?: React.ComponentType<any>;
   path?: string;
   children?: Array<Route>;
@@ -40,7 +40,7 @@ export interface Route {
 }
 
 export interface RouteObject {
-  name: string;
+  name: string | symbol;
   component?: React.ComponentType<any>;
   path?: string;
   children?: Record<string, RouteObject>;
@@ -57,7 +57,7 @@ export type RegexpList = {
   path: string;
   routes: string[];
   matcher: {
-    keys: { name: string }[];
+    keys: { name: string | symbol }[];
     regexp: RegExp;
   };
 }[]
