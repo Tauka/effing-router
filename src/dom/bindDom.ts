@@ -6,7 +6,7 @@ import { pathListToRegexpList } from './pathListToRegexpList';
 import { parsePath } from './parsePath';
 import { routeListToObject } from '@common';
 
-export const bindDom = (router: RouterBase, routesList: RoutesList, basename: string) =>
+export const bindDom = (router: RouterBase, routesList: RoutesList, basename = '') =>
 {
 	if(!router)
 		throw new Error(`You must provide "router" from "effing-router"`)
