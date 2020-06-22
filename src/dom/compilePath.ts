@@ -1,4 +1,5 @@
 import { Routes, Params } from '@core/types';
+import { ROUTE_NOT_FOUND } from '@dist';
 
 export const compilePath = (path: string, params: Params) => {
 	if(path.includes('?'))
@@ -45,6 +46,9 @@ const collectUnusedParams = (params: Params, used: Record<string, boolean>) => {
 }
 
 export const compileDefaultPath = (pathTokens: Routes) => {
+	if(pathTokens[0] === ROUTE_NOT_FOUND)
+		return '/notfound';
+
 	return '/' + pathTokens.join('/');
 }
 
