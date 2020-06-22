@@ -12,6 +12,14 @@ Effing-router is a config-based router with support of [effector](https://github
 
 Instead of **parsing** url and rendering routes that match path, `effing-router` offers routing by specifying routes (parts of your application) that you want to render, and **url** gets compiled out of routes as *side-effect*.
 
+## Installation
+```
+npm install effing-router
+
+# yarn
+yarn add effing-router
+```
+
 
 ## Getting started
 ```javascript
