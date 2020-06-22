@@ -1,5 +1,5 @@
 import { createStore, Store, combine } from 'effector';
-import { FunctionQuery, ObjectQuery, RoutesQuery, ParamsQuery } from '@core/types';
+import { FunctionQuery, ObjectQuery, RoutesQuery, ParamsQuery, RoutesConfiguration } from '@core/types';
 
 export type Noop = () => {};
 
@@ -64,19 +64,19 @@ export const isParamsQuery = (arg: any): arg is ParamsQuery => {
 	return typeof arg === 'object';
 }
 
-export const routeObjectPath: any = (obj: Record<string, any>, pathArr: string[]) => {
-	const path = pathArr[0];
+export const routeObjectPath: any = (obj: RoutesConfiguration, routesArr: (string | symbol)[]) => {
+const path = routesArr[0];
 
-	if(typeof obj[path] !== 'object' || obj[path] === null)
-		throw new Error(`Invalid path, expected route at ${path}`);
+if(typeof obj[String(path)] !== 'object' || obj[String(path)] === null)
+		throw new Error(`Invalid path, expected route at ${String(path)}`);
 
-	if(!obj[path].children)
-		throw new Error(`Invalid path, expected childen at ${path}`);
+	if(!obj[String(path)].children)
+		throw new Error(`Invalid path, expected childen at ${String(path)}`);
 
-	if(pathArr.length === 1)
-		return obj[path]
+	if(routesArr.length === 1)
+		return obj[String(path)]
 
-	return routeObjectPath(obj[path].children, pathArr.slice(1));
+	return routeObjectPath(obj[String(path)].children, routesArr.slice(1));
 }
 
 export const every = (...booleanStores: Store<boolean>[]) => {

@@ -51,7 +51,7 @@ export type RoutesConfiguration = Record<string | symbol, RouteObject>;
 export type RoutesList = Array<Route>;
 export type PathList = {
   path: string;
-  routes: string[];
+  routes: (string | symbol)[];
 }[]
 export type RegexpList = {
   path: string;
