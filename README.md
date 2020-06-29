@@ -14,10 +14,10 @@ Instead of **parsing** url and rendering routes that match path, `effing-router`
 
 ## Installation
 ```
-npm install effing-router
+npm install effing-router effector effector-react --save
 
 # yarn
-yarn add effing-router
+yarn add effing-router effector effector-react
 ```
 
 
@@ -124,7 +124,7 @@ Demo: https://codesandbox.io/s/great-cache-jfnq9?file=/src/features/Dashboard.ts
 ```javascript
 import { router } from 'effing-router';
 
-const $userId = router.createParamsStore('userId'),
+const $userId = router.createParamStore('userId'),
 $userId.watch(id => console.log('new user id: ', id))
 
 router.go({ userId: 5 }); // 'new user id: 5'
@@ -284,11 +284,11 @@ router.createMountEvent({
 ### `router.createUnmountEvent`
 It has same signatures as `createMountEvent`, but gets triggered when you leave particular route (optionally with particular params)
 
-### `router.createParamsStore`
+### `router.createParamStore`
 Create store that holds value of particular param, gets updated when that param is changed
 
 ```javascript
-const $userId = createParamsStore('userId');
+const $userId = createParamStore('userId');
 ```
 
 See [Working with params](#working-with-params)
@@ -307,7 +307,7 @@ API for rendering routes as React components, it's located at `effing-router/rea
 ### `<RouterView router routesList/>`
 Renders route tree
 
-#### childRoute()
+#### `childRoute()`
 
 Each rendered component gets passed a `childRoute` function as prop, it is used to render child routes, and you can also pass additional props inside
 
